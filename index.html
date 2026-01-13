@@ -1,0 +1,1135 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>TSG • Cadastro de Membros</title>
+  <meta name="theme-color" content="#0b0f17" />
+
+  <!-- PDF -->
+  <script src="https://cdn.jsdelivr.net/npm/jspdf@2.5.1/dist/jspdf.umd.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/jspdf-autotable@3.8.4/dist/jspdf.plugin.autotable.min.js"></script>
+
+  <style>
+    :root{
+      --bg:#0b0f17;
+      --panel:#0f1624;
+      --card:#121b2c;
+      --soft:#16233a;
+      --text:#eaf0ff;
+      --muted:#aab6d3;
+      --line:rgba(255,255,255,.08);
+      --accent:#7aa2ff;
+      --danger:#ff5b7a;
+      --ok:#49e2b1;
+
+      --r:16px;
+      --shadow: 0 12px 30px rgba(0,0,0,.35);
+      --shadow2: 0 10px 24px rgba(0,0,0,.28);
+    }
+    *{box-sizing:border-box}
+    html,body{height:100%}
+    body{
+      margin:0;
+      font-family: system-ui,-apple-system,Segoe UI,Roboto,Ubuntu,Cantarell,Noto Sans,Arial,sans-serif;
+      background: radial-gradient(1200px 700px at 30% -10%, rgba(122,162,255,.22), transparent 55%),
+                  radial-gradient(900px 600px at 90% 10%, rgba(73,226,177,.12), transparent 50%),
+                  var(--bg);
+      color:var(--text);
+    }
+    a{color:inherit}
+    .wrap{min-height:100%; display:flex; align-items:center; justify-content:center; padding:18px}
+    .app{
+      width:min(1040px, 100%);
+      background: rgba(15,22,36,.7);
+      border:1px solid var(--line);
+      border-radius: 22px;
+      box-shadow: var(--shadow);
+      overflow:hidden;
+      backdrop-filter: blur(10px);
+    }
+
+    /* Top brand */
+    .brand{
+      display:flex; align-items:center; gap:12px;
+    }
+    .logo{
+      width:44px;height:44px;border-radius:14px;
+      background: linear-gradient(135deg, rgba(122,162,255,.95), rgba(73,226,177,.85));
+      display:grid; place-items:center;
+      color:#071018; font-weight:900;
+      letter-spacing:.5px;
+      box-shadow: 0 10px 20px rgba(0,0,0,.25);
+      user-select:none;
+    }
+    .brand h1{
+      margin:0;
+      font-size: 16px;
+      letter-spacing:.2px;
+      font-weight: 750;
+      line-height: 1.1;
+    }
+    .brand p{
+      margin:0;
+      color:var(--muted);
+      font-size:12px;
+    }
+
+    /* Screens */
+    .screen{display:none}
+    .screen.active{display:block}
+
+    /* Login */
+    .login{
+      padding:22px;
+      display:grid;
+      grid-template-columns: 1fr;
+      gap:16px;
+    }
+    .loginCard{
+      background: rgba(18,27,44,.82);
+      border:1px solid var(--line);
+      border-radius: 22px;
+      box-shadow: var(--shadow2);
+      padding:18px;
+    }
+    .loginTitle{
+      display:flex; justify-content:space-between; align-items:flex-start; gap:12px;
+    }
+    .loginTitle .big{
+      font-size: 18px;
+      font-weight: 800;
+      margin:0;
+    }
+    .loginTitle .small{
+      margin:6px 0 0;
+      color:var(--muted);
+      font-size: 13px;
+      line-height:1.35;
+    }
+    .seg{
+      display:flex; gap:8px; flex-wrap:wrap;
+      margin-top:10px;
+    }
+    .pill{
+      padding:9px 12px;
+      border-radius: 999px;
+      border:1px solid var(--line);
+      background: rgba(15,22,36,.6);
+      color:var(--muted);
+      cursor:pointer;
+      font-size:13px;
+      user-select:none;
+    }
+    .pill.active{
+      background: rgba(122,162,255,.18);
+      border-color: rgba(122,162,255,.35);
+      color: var(--text);
+    }
+    .form{
+      display:grid; gap:10px;
+      margin-top:14px;
+    }
+    label{
+      font-size:12px;
+      color:var(--muted);
+      display:block;
+      margin-bottom:6px;
+    }
+    .field{
+      background: rgba(10,14,22,.55);
+      border:1px solid var(--line);
+      border-radius: 14px;
+      padding:12px 12px;
+      color:var(--text);
+      outline:none;
+      width:100%;
+    }
+    .row{
+      display:grid;
+      grid-template-columns: 1fr;
+      gap:10px;
+    }
+    .btnRow{
+      display:flex; gap:10px; flex-wrap:wrap;
+      margin-top:8px;
+    }
+    .btn{
+      border:1px solid var(--line);
+      background: rgba(18,27,44,.7);
+      color:var(--text);
+      padding:11px 14px;
+      border-radius: 14px;
+      cursor:pointer;
+      font-weight: 650;
+      font-size: 13px;
+      display:inline-flex; gap:10px; align-items:center;
+      transition: transform .06s ease, background .2s ease, opacity .2s ease;
+      user-select:none;
+    }
+    .btn:hover{background: rgba(18,27,44,.95)}
+    .btn:active{transform: translateY(1px)}
+    .btn.primary{
+      background: rgba(122,162,255,.18);
+      border-color: rgba(122,162,255,.35);
+    }
+    .btn.danger{
+      background: rgba(255,91,122,.12);
+      border-color: rgba(255,91,122,.32);
+    }
+    .btn.ghost{
+      background: transparent;
+    }
+    .btn:disabled{
+      opacity:.45;
+      cursor:not-allowed;
+    }
+    .hint{
+      color: var(--muted);
+      font-size: 12px;
+      line-height:1.35;
+      margin-top: 8px;
+    }
+    .note{
+      border:1px dashed rgba(255,255,255,.14);
+      border-radius: 16px;
+      padding:12px;
+      color: var(--muted);
+      background: rgba(10,14,22,.35);
+      font-size: 12px;
+      line-height: 1.45;
+    }
+
+    /* Main */
+    .topbar{
+      padding:16px 18px;
+      border-bottom:1px solid var(--line);
+      display:flex; align-items:center; justify-content:space-between; gap:12px;
+      background: rgba(15,22,36,.6);
+    }
+    .topActions{
+      display:flex; gap:10px; flex-wrap:wrap; align-items:center; justify-content:flex-end;
+    }
+    .badge{
+      padding:8px 10px;
+      border-radius: 999px;
+      border:1px solid var(--line);
+      color: var(--muted);
+      font-size:12px;
+      background: rgba(18,27,44,.55);
+      user-select:none;
+    }
+    .content{
+      padding: 16px 18px 18px;
+      display:grid;
+      gap:14px;
+    }
+    .panel{
+      background: rgba(18,27,44,.65);
+      border:1px solid var(--line);
+      border-radius: 22px;
+      padding: 14px;
+      box-shadow: var(--shadow2);
+    }
+    .toolbar{
+      display:flex; gap:10px; flex-wrap:wrap; align-items:center;
+    }
+    .toolbar .grow{flex:1}
+    .toolbar .field{padding:11px 12px}
+    .countBox{
+      display:flex; align-items:center; justify-content:space-between; gap:10px;
+    }
+    .countBox .n{
+      font-size: 28px;
+      font-weight: 900;
+      letter-spacing: -0.5px;
+    }
+    .countBox .t{
+      color: var(--muted);
+      font-size: 12px;
+      line-height:1.2;
+    }
+
+    /* List - mobile cards */
+    .list{
+      display:grid;
+      gap:10px;
+    }
+    .member{
+      border:1px solid var(--line);
+      background: rgba(10,14,22,.35);
+      border-radius: 18px;
+      padding:12px;
+      cursor:pointer;
+      transition: transform .06s ease, background .2s ease, border-color .2s ease;
+      display:grid; gap:8px;
+    }
+    .member:hover{background: rgba(10,14,22,.55)}
+    .member:active{transform: translateY(1px)}
+    .member.selected{
+      border-color: rgba(122,162,255,.55);
+      background: rgba(122,162,255,.10);
+    }
+    .memberTop{
+      display:flex; align-items:flex-start; justify-content:space-between; gap:10px;
+    }
+    .memberName{
+      font-weight: 850;
+      letter-spacing:.2px;
+      margin:0;
+    }
+    .chips{display:flex; gap:6px; flex-wrap:wrap; justify-content:flex-end}
+    .chip{
+      padding:6px 8px;
+      border-radius: 999px;
+      border:1px solid var(--line);
+      background: rgba(18,27,44,.55);
+      color: var(--muted);
+      font-size: 11px;
+      user-select:none;
+      white-space:nowrap;
+    }
+    .chip.ok{border-color: rgba(73,226,177,.32); background: rgba(73,226,177,.10); color: var(--text)}
+    .kv{
+      display:grid; gap:6px;
+      color: var(--muted);
+      font-size: 12px;
+      line-height:1.35;
+    }
+    .kv b{color: var(--text); font-weight: 700}
+    .empty{
+      color: var(--muted);
+      font-size: 13px;
+      padding: 12px;
+      border:1px dashed rgba(255,255,255,.12);
+      border-radius: 18px;
+      background: rgba(10,14,22,.25);
+    }
+
+    /* Modal */
+    .modalBack{
+      position: fixed;
+      inset: 0;
+      background: rgba(0,0,0,.62);
+      display:none;
+      align-items:center;
+      justify-content:center;
+      padding: 16px;
+      z-index: 50;
+    }
+    .modalBack.show{display:flex}
+    .modal{
+      width: min(560px, 100%);
+      background: rgba(18,27,44,.92);
+      border:1px solid var(--line);
+      border-radius: 22px;
+      box-shadow: var(--shadow);
+      overflow:hidden;
+      backdrop-filter: blur(10px);
+    }
+    .modalHead{
+      padding: 14px 16px;
+      border-bottom:1px solid var(--line);
+      display:flex; align-items:center; justify-content:space-between; gap:10px;
+    }
+    .modalHead h2{
+      margin:0;
+      font-size: 14px;
+      letter-spacing:.2px;
+    }
+    .modalBody{padding: 14px 16px 16px}
+    .grid2{
+      display:grid;
+      grid-template-columns: 1fr;
+      gap:10px;
+    }
+    .hr{
+      height:1px;
+      background: var(--line);
+      margin: 10px 0;
+    }
+    .toast{
+      position: fixed;
+      left: 50%;
+      bottom: 18px;
+      transform: translateX(-50%);
+      background: rgba(18,27,44,.92);
+      border:1px solid var(--line);
+      border-radius: 999px;
+      padding: 10px 12px;
+      box-shadow: var(--shadow2);
+      display:none;
+      color: var(--text);
+      font-size: 13px;
+      z-index: 80;
+      max-width: calc(100% - 24px);
+      overflow:hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+    .toast.show{display:block}
+
+    @media (min-width: 760px){
+      .login{grid-template-columns: 1.1fr .9fr; align-items:start}
+      .row{grid-template-columns: 1fr 1fr}
+      .grid2{grid-template-columns: 1fr 1fr}
+      .member{padding:14px}
+    }
+  </style>
+</head>
+
+<body>
+  <div class="wrap">
+    <div class="app">
+
+      <!-- LOGIN SCREEN -->
+      <section id="loginScreen" class="screen active">
+        <div class="login">
+          <div class="loginCard">
+            <div class="loginTitle">
+              <div>
+                <div class="brand">
+                  <div class="logo" aria-label="Logo TSG">TSG</div>
+                  <div>
+                    <h1>CADASTRO DE MEMBROS</h1>
+                    <p>Trade & Share Games • PS4 / PS5</p>
+                  </div>
+                </div>
+                <p class="small" style="margin-top:12px">
+                  Acesso <b>Admin</b> permite incluir/editar/excluir.  
+                  <b>Visualização</b> é somente leitura.
+                </p>
+              </div>
+            </div>
+
+            <div class="seg" role="tablist" aria-label="Modo de acesso">
+              <div id="pillAdmin" class="pill active" role="tab" tabindex="0">Admin</div>
+              <div id="pillView" class="pill" role="tab" tabindex="0">Somente visualização</div>
+            </div>
+
+            <div id="adminForm" class="form">
+              <div class="row">
+                <div>
+                  <label for="loginUser">Login</label>
+                  <input id="loginUser" class="field" placeholder="ex: admin" autocomplete="username" />
+                </div>
+                <div>
+                  <label for="loginPass">Senha</label>
+                  <input id="loginPass" type="password" class="field" placeholder="••••••••" autocomplete="current-password" />
+                </div>
+              </div>
+              <div class="btnRow">
+                <button id="btnLoginAdmin" class="btn primary">Entrar (Admin)</button>
+                <button id="btnGoView" class="btn ghost">Entrar em visualização</button>
+              </div>
+
+              <div class="hint">
+                Padrão: <b>login: admin</b> • <b>senha: tsgadmin</b> (troque no código).
+              </div>
+            </div>
+
+            <div id="viewForm" class="form" style="display:none">
+              <div class="note">
+                Modo visualização não altera dados.  
+                Ideal pra compartilhar o link com o grupo.
+              </div>
+              <div class="btnRow">
+                <button id="btnLoginView" class="btn primary">Entrar (Visualização)</button>
+                <button id="btnBackAdmin" class="btn ghost">Voltar</button>
+              </div>
+            </div>
+          </div>
+
+          <div class="loginCard">
+            <h3 style="margin:0 0 8px; font-size:14px; letter-spacing:.2px">Boas melhorias (já incluídas)</h3>
+            <div class="note">
+              • Busca + filtro por plataforma  
+              • Exportar/Importar JSON (backup)  
+              • Relatório PDF do que estiver filtrado  
+              • Interface mobile-first (cards)  
+              • Sessão por papel (Admin / View)  
+              <div class="hr"></div>
+              <b>Sobre segurança:</b> no GitHub Pages tudo é client-side.  
+              Isso impede “segurança forte” (senha e dados ficam acessíveis no código/navegador).
+              Se você quiser segurança real + banco compartilhado, te explico abaixo como ligar num backend (Supabase/Firestore).
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- MAIN SCREEN -->
+      <section id="mainScreen" class="screen">
+        <div class="topbar">
+          <div class="brand">
+            <div class="logo">TSG</div>
+            <div>
+              <h1 style="margin:0; font-size:14px; font-weight:850">CADASTRO DE MEMBROS</h1>
+              <p id="roleLabel" style="margin:2px 0 0; font-size:12px; color:var(--muted)">—</p>
+            </div>
+          </div>
+          <div class="topActions">
+            <span id="dbStatus" class="badge">Local DB</span>
+            <button id="btnLogout" class="btn">Sair</button>
+          </div>
+        </div>
+
+        <div class="content">
+          <div class="panel">
+            <div class="countBox">
+              <div>
+                <div id="count" class="n">0</div>
+                <div class="t">membros cadastrados</div>
+              </div>
+              <div class="chips">
+                <span id="selectedBadge" class="chip" style="display:none">Selecionado</span>
+                <span id="filterBadge" class="chip" style="display:none">Filtro ativo</span>
+              </div>
+            </div>
+
+            <div class="hr"></div>
+
+            <div class="toolbar">
+              <input id="q" class="field grow" placeholder="Buscar por nome, email, PSN ou responsável..." />
+              <select id="platformFilter" class="field" style="max-width:180px">
+                <option value="">Plataforma: Todas</option>
+                <option value="PS5">PS5</option>
+                <option value="PS4">PS4</option>
+              </select>
+            </div>
+
+            <div class="btnRow" style="margin-top:12px">
+              <button id="btnAdd" class="btn primary">Incluir membro</button>
+              <button id="btnEdit" class="btn">Editar</button>
+              <button id="btnDel" class="btn danger">Excluir</button>
+              <button id="btnPdf" class="btn">Relatório PDF</button>
+              <button id="btnExport" class="btn">Exportar JSON</button>
+              <button id="btnImport" class="btn">Importar JSON</button>
+              <input id="importFile" type="file" accept="application/json" style="display:none" />
+            </div>
+
+            <div class="hint" style="margin-top:10px">
+              Dica: clique em um membro para selecionar (Editar/Excluir).
+            </div>
+          </div>
+
+          <div class="panel">
+            <div id="list" class="list"></div>
+            <div id="empty" class="empty" style="display:none">
+              Nenhum membro encontrado com esses filtros.
+            </div>
+          </div>
+        </div>
+      </section>
+
+    </div>
+  </div>
+
+  <!-- MODAL (ADD/EDIT) -->
+  <div id="modalBack" class="modalBack" role="dialog" aria-modal="true" aria-label="Editar membro">
+    <div class="modal">
+      <div class="modalHead">
+        <h2 id="modalTitle">Novo membro</h2>
+        <button id="btnCloseModal" class="btn ghost">Fechar</button>
+      </div>
+      <div class="modalBody">
+        <div class="grid2">
+          <div>
+            <label for="mName">Nome</label>
+            <input id="mName" class="field" placeholder="Ex: João Silva" />
+          </div>
+          <div>
+            <label for="mEmail">Email</label>
+            <input id="mEmail" class="field" placeholder="ex: joao@email.com" />
+          </div>
+          <div>
+            <label for="mPlatform">Plataforma</label>
+            <select id="mPlatform" class="field">
+              <option value="PS5">PS5</option>
+              <option value="PS4">PS4</option>
+            </select>
+          </div>
+          <div>
+            <label for="mPSN">ID PSN</label>
+            <input id="mPSN" class="field" placeholder="Ex: meuID_PSN" />
+          </div>
+        </div>
+
+        <div style="margin-top:10px">
+          <label for="mResp">Responsável</label>
+          <input id="mResp" class="field" placeholder="Ex: Admin / Nome do responsável" />
+        </div>
+
+        <div class="btnRow" style="margin-top:12px">
+          <button id="btnSave" class="btn primary">Salvar</button>
+          <button id="btnCancel" class="btn">Cancelar</button>
+        </div>
+
+        <div class="hint">
+          Campos: Nome, Email, Plataforma, ID PSN, Responsável.
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div id="toast" class="toast"></div>
+
+  <script>
+    /**********************
+     * CONFIG (troque aqui)
+     **********************/
+    const APP = {
+      STORAGE_KEY: "TSG_MEMBERS_DB_V1",
+      SESSION_KEY: "TSG_MEMBERS_SESSION_V1",
+      // Credenciais padrão (controle básico — NÃO é “segurança forte” em GitHub Pages)
+      ADMIN_USER: "admin",
+      // hash de "tsgadmin" + SALT (gerado abaixo)
+      SALT: "TSG::2026",
+      ADMIN_PASS_HASH: null, // preenchido na init
+    };
+
+    /**********************
+     * Helpers
+     **********************/
+    const $ = (id) => document.getElementById(id);
+
+    function toast(msg){
+      const t = $("toast");
+      t.textContent = msg;
+      t.classList.add("show");
+      clearTimeout(toast._t);
+      toast._t = setTimeout(() => t.classList.remove("show"), 2600);
+    }
+
+    function uid(){
+      return crypto.randomUUID ? crypto.randomUUID() : String(Date.now()) + Math.random().toString(16).slice(2);
+    }
+
+    function nowISO(){ return new Date().toISOString(); }
+
+    function normalize(s){
+      return (s ?? "")
+        .toString()
+        .trim()
+        .toLowerCase()
+        .normalize("NFD")
+        .replace(/\p{Diacritic}/gu,"");
+    }
+
+    async function sha256(text){
+      const enc = new TextEncoder().encode(text);
+      const hash = await crypto.subtle.digest("SHA-256", enc);
+      return Array.from(new Uint8Array(hash)).map(b=>b.toString(16).padStart(2,"0")).join("");
+    }
+
+    /**********************
+     * Local DB (localStorage)
+     **********************/
+    function loadDB(){
+      try{
+        const raw = localStorage.getItem(APP.STORAGE_KEY);
+        if(!raw) return [];
+        const arr = JSON.parse(raw);
+        return Array.isArray(arr) ? arr : [];
+      }catch{
+        return [];
+      }
+    }
+    function saveDB(arr){
+      localStorage.setItem(APP.STORAGE_KEY, JSON.stringify(arr));
+    }
+
+    /**********************
+     * Session
+     **********************/
+    function setSession(session){
+      sessionStorage.setItem(APP.SESSION_KEY, JSON.stringify(session));
+    }
+    function getSession(){
+      try{
+        return JSON.parse(sessionStorage.getItem(APP.SESSION_KEY) || "null");
+      }catch{
+        return null;
+      }
+    }
+    function clearSession(){
+      sessionStorage.removeItem(APP.SESSION_KEY);
+    }
+
+    /**********************
+     * State
+     **********************/
+    let state = {
+      role: "view", // "admin" | "view"
+      selectedId: null,
+      editingId: null,
+      members: [],
+      q: "",
+      platform: "",
+    };
+
+    /**********************
+     * UI Switch
+     **********************/
+    function showScreen(name){
+      $("loginScreen").classList.remove("active");
+      $("mainScreen").classList.remove("active");
+      $(name).classList.add("active");
+    }
+
+    function setRoleUI(){
+      const isAdmin = state.role === "admin";
+      $("roleLabel").textContent = isAdmin ? "Modo: Admin (acesso total)" : "Modo: Visualização (somente leitura)";
+
+      $("btnAdd").disabled = !isAdmin;
+      $("btnEdit").disabled = !isAdmin || !state.selectedId;
+      $("btnDel").disabled = !isAdmin || !state.selectedId;
+
+      // PDF sempre habilitado (pedido)
+      $("btnPdf").disabled = false;
+
+      // Export/Import: se quiser, pode deixar só admin. Aqui deixei admin para evitar bagunça.
+      $("btnExport").disabled = !isAdmin;
+      $("btnImport").disabled = !isAdmin;
+    }
+
+    function updateBadges(){
+      $("selectedBadge").style.display = state.selectedId ? "inline-flex" : "none";
+
+      const hasFilter = (state.q && state.q.trim().length > 0) || (state.platform && state.platform.length > 0);
+      $("filterBadge").style.display = hasFilter ? "inline-flex" : "none";
+    }
+
+    /**********************
+     * Render
+     **********************/
+    function filteredMembers(){
+      const qn = normalize(state.q);
+      const plat = state.platform;
+
+      return state.members.filter(m => {
+        const okPlat = !plat || m.platform === plat;
+        if(!okPlat) return false;
+
+        if(!qn) return true;
+
+        const hay = normalize([
+          m.name, m.email, m.platform, m.psnId, m.responsible
+        ].join(" "));
+        return hay.includes(qn);
+      });
+    }
+
+    function render(){
+      const list = $("list");
+      list.innerHTML = "";
+
+      const items = filteredMembers();
+      $("count").textContent = String(state.members.length);
+
+      if(items.length === 0){
+        $("empty").style.display = "block";
+      }else{
+        $("empty").style.display = "none";
+      }
+
+      for(const m of items){
+        const el = document.createElement("div");
+        el.className = "member" + (m.id === state.selectedId ? " selected" : "");
+        el.innerHTML = `
+          <div class="memberTop">
+            <div>
+              <p class="memberName">${escapeHTML(m.name)}</p>
+              <div class="kv">
+                <div><b>Email:</b> ${escapeHTML(m.email || "—")}</div>
+                <div><b>PSN:</b> ${escapeHTML(m.psnId || "—")}</div>
+                <div><b>Responsável:</b> ${escapeHTML(m.responsible || "—")}</div>
+              </div>
+            </div>
+            <div class="chips">
+              <span class="chip ok">${escapeHTML(m.platform)}</span>
+              <span class="chip">${new Date(m.createdAt).toLocaleDateString("pt-BR")}</span>
+            </div>
+          </div>
+        `;
+        el.addEventListener("click", () => {
+          state.selectedId = (state.selectedId === m.id) ? null : m.id;
+          setRoleUI();
+          updateBadges();
+          render();
+        });
+        list.appendChild(el);
+      }
+
+      updateBadges();
+      setRoleUI();
+    }
+
+    function escapeHTML(s){
+      return (s ?? "").toString()
+        .replaceAll("&","&amp;")
+        .replaceAll("<","&lt;")
+        .replaceAll(">","&gt;")
+        .replaceAll('"',"&quot;")
+        .replaceAll("'","&#039;");
+    }
+
+    /**********************
+     * Modal
+     **********************/
+    function openModal(mode, member=null){
+      $("modalBack").classList.add("show");
+      if(mode === "add"){
+        $("modalTitle").textContent = "Incluir membro";
+        state.editingId = null;
+        $("mName").value = "";
+        $("mEmail").value = "";
+        $("mPlatform").value = "PS5";
+        $("mPSN").value = "";
+        $("mResp").value = "";
+      }else{
+        $("modalTitle").textContent = "Editar membro";
+        state.editingId = member.id;
+        $("mName").value = member.name ?? "";
+        $("mEmail").value = member.email ?? "";
+        $("mPlatform").value = member.platform ?? "PS5";
+        $("mPSN").value = member.psnId ?? "";
+        $("mResp").value = member.responsible ?? "";
+      }
+      setTimeout(() => $("mName").focus(), 50);
+    }
+
+    function closeModal(){
+      $("modalBack").classList.remove("show");
+    }
+
+    function validateMember(data){
+      if(!data.name || data.name.trim().length < 2) return "Informe o Nome (mínimo 2 caracteres).";
+      if(data.email && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(data.email.trim())) return "Email inválido.";
+      if(!["PS5","PS4"].includes(data.platform)) return "Plataforma inválida.";
+      return null;
+    }
+
+    function upsertMember(data){
+      const err = validateMember(data);
+      if(err){ toast(err); return; }
+
+      const db = loadDB();
+      if(state.editingId){
+        const idx = db.findIndex(x => x.id === state.editingId);
+        if(idx === -1){ toast("Registro não encontrado."); return; }
+        db[idx] = {
+          ...db[idx],
+          ...data,
+          updatedAt: nowISO(),
+        };
+        saveDB(db);
+        toast("Membro atualizado.");
+      }else{
+        db.unshift({
+          id: uid(),
+          name: data.name.trim(),
+          email: (data.email || "").trim(),
+          platform: data.platform,
+          psnId: (data.psnId || "").trim(),
+          responsible: (data.responsible || "").trim(),
+          createdAt: nowISO(),
+          updatedAt: nowISO(),
+        });
+        saveDB(db);
+        toast("Membro incluído.");
+      }
+
+      state.members = loadDB();
+      state.selectedId = null;
+      closeModal();
+      render();
+    }
+
+    function deleteSelected(){
+      if(!state.selectedId) return;
+      const m = state.members.find(x => x.id === state.selectedId);
+      if(!m) return;
+
+      const ok = confirm(`Excluir "${m.name}"?`);
+      if(!ok) return;
+
+      const db = loadDB().filter(x => x.id !== state.selectedId);
+      saveDB(db);
+      state.members = db;
+      state.selectedId = null;
+      toast("Membro excluído.");
+      render();
+    }
+
+    /**********************
+     * PDF Report
+     **********************/
+    function generatePDF(){
+      const items = filteredMembers();
+      const title = "TSG • Cadastro de Membros";
+      const sub = `Gerado em ${new Date().toLocaleString("pt-BR")} • Registros: ${items.length}`;
+
+      const { jsPDF } = window.jspdf;
+      const doc = new jsPDF({ orientation: "portrait", unit: "pt", format: "a4" });
+
+      doc.setFont("helvetica", "bold");
+      doc.setFontSize(14);
+      doc.text(title, 40, 44);
+
+      doc.setFont("helvetica", "normal");
+      doc.setFontSize(10);
+      doc.text(sub, 40, 62);
+
+      const rows = items.map(m => ([
+        m.name || "",
+        m.email || "",
+        m.platform || "",
+        m.psnId || "",
+        m.responsible || "",
+      ]));
+
+      doc.autoTable({
+        startY: 78,
+        head: [["Nome", "Email", "Plataforma", "ID PSN", "Responsável"]],
+        body: rows,
+        styles: { font: "helvetica", fontSize: 9, cellPadding: 6 },
+        headStyles: { fillColor: [20, 30, 50] },
+        alternateRowStyles: { fillColor: [245, 245, 255] },
+        margin: { left: 40, right: 40 },
+      });
+
+      doc.save("TSG_Cadastro_de_Membros.pdf");
+      toast("PDF gerado.");
+    }
+
+    /**********************
+     * Export / Import
+     **********************/
+    function exportJSON(){
+      const db = loadDB();
+      const payload = {
+        app: "TSG_MEMBERS",
+        version: 1,
+        exportedAt: nowISO(),
+        data: db,
+      };
+
+      const blob = new Blob([JSON.stringify(payload, null, 2)], { type: "application/json" });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement("a");
+      a.href = url;
+      a.download = `TSG_Members_Backup_${new Date().toISOString().slice(0,10)}.json`;
+      document.body.appendChild(a);
+      a.click();
+      a.remove();
+      URL.revokeObjectURL(url);
+      toast("Backup exportado.");
+    }
+
+    async function importJSON(file){
+      try{
+        const text = await file.text();
+        const payload = JSON.parse(text);
+        if(!payload || !payload.data || !Array.isArray(payload.data)) throw new Error("Formato inválido.");
+
+        // Validação básica
+        const clean = payload.data.map(x => ({
+          id: x.id || uid(),
+          name: (x.name || "").trim(),
+          email: (x.email || "").trim(),
+          platform: (x.platform === "PS4" ? "PS4" : "PS5"),
+          psnId: (x.psnId || "").trim(),
+          responsible: (x.responsible || "").trim(),
+          createdAt: x.createdAt || nowISO(),
+          updatedAt: x.updatedAt || nowISO(),
+        })).filter(x => x.name.length >= 2);
+
+        if(!confirm(`Importar ${clean.length} registros? Isso vai substituir o banco atual deste navegador.`)) return;
+
+        saveDB(clean);
+        state.members = loadDB();
+        state.selectedId = null;
+        toast("Importação concluída.");
+        render();
+      }catch(e){
+        toast("Falha ao importar JSON.");
+      }
+    }
+
+    /**********************
+     * Login logic
+     **********************/
+    function setLoginMode(mode){
+      const isAdmin = mode === "admin";
+      $("pillAdmin").classList.toggle("active", isAdmin);
+      $("pillView").classList.toggle("active", !isAdmin);
+      $("adminForm").style.display = isAdmin ? "grid" : "none";
+      $("viewForm").style.display = isAdmin ? "none" : "grid";
+    }
+
+    async function loginAdmin(){
+      const u = $("loginUser").value.trim();
+      const p = $("loginPass").value;
+
+      if(u !== APP.ADMIN_USER){
+        toast("Login inválido.");
+        return;
+      }
+      const hash = await sha256(p + "::" + APP.SALT);
+      if(hash !== APP.ADMIN_PASS_HASH){
+        toast("Senha inválida.");
+        return;
+      }
+
+      state.role = "admin";
+      setSession({ role: "admin", at: nowISO() });
+      enterApp();
+    }
+
+    function loginView(){
+      state.role = "view";
+      setSession({ role: "view", at: nowISO() });
+      enterApp();
+    }
+
+    function enterApp(){
+      state.members = loadDB();
+
+      // Seed opcional (se estiver vazio, cria 1 exemplo e avisa)
+      if(state.members.length === 0){
+        const seed = [{
+          id: uid(),
+          name: "Exemplo • Membro TSG",
+          email: "exemplo@tsg.com",
+          platform: "PS5",
+          psnId: "TSG_Example",
+          responsible: "Admin",
+          createdAt: nowISO(),
+          updatedAt: nowISO(),
+        }];
+        saveDB(seed);
+        state.members = loadDB();
+        toast("Criei 1 registro de exemplo. Você pode editar/excluir.");
+      }
+
+      showScreen("mainScreen");
+      setRoleUI();
+      render();
+    }
+
+    function logout(){
+      clearSession();
+      state.selectedId = null;
+      state.editingId = null;
+      state.q = "";
+      state.platform = "";
+      $("q").value = "";
+      $("platformFilter").value = "";
+      $("loginPass").value = "";
+      showScreen("loginScreen");
+      setLoginMode("admin");
+      toast("Você saiu.");
+    }
+
+    /**********************
+     * Init & Events
+     **********************/
+    async function init(){
+      // Gera o hash padrão para "tsgadmin"
+      APP.ADMIN_PASS_HASH = await sha256("tsgadmin" + "::" + APP.SALT);
+
+      // Tabs login
+      $("pillAdmin").addEventListener("click", () => setLoginMode("admin"));
+      $("pillView").addEventListener("click", () => setLoginMode("view"));
+      $("btnGoView").addEventListener("click", () => setLoginMode("view"));
+      $("btnBackAdmin").addEventListener("click", () => setLoginMode("admin"));
+
+      // login
+      $("btnLoginAdmin").addEventListener("click", loginAdmin);
+      $("btnLoginView").addEventListener("click", loginView);
+
+      // enter key
+      $("loginPass").addEventListener("keydown", (e) => {
+        if(e.key === "Enter") loginAdmin();
+      });
+
+      // main actions
+      $("btnLogout").addEventListener("click", logout);
+
+      $("q").addEventListener("input", (e) => {
+        state.q = e.target.value;
+        render();
+      });
+
+      $("platformFilter").addEventListener("change", (e) => {
+        state.platform = e.target.value;
+        render();
+      });
+
+      $("btnAdd").addEventListener("click", () => {
+        if(state.role !== "admin") return;
+        openModal("add");
+      });
+
+      $("btnEdit").addEventListener("click", () => {
+        if(state.role !== "admin") return;
+        const m = state.members.find(x => x.id === state.selectedId);
+        if(!m){ toast("Selecione um membro."); return; }
+        openModal("edit", m);
+      });
+
+      $("btnDel").addEventListener("click", () => {
+        if(state.role !== "admin") return;
+        if(!state.selectedId){ toast("Selecione um membro."); return; }
+        deleteSelected();
+      });
+
+      $("btnPdf").addEventListener("click", generatePDF);
+
+      $("btnExport").addEventListener("click", () => {
+        if(state.role !== "admin") return;
+        exportJSON();
+      });
+
+      $("btnImport").addEventListener("click", () => {
+        if(state.role !== "admin") return;
+        $("importFile").click();
+      });
+
+      $("importFile").addEventListener("change", (e) => {
+        const f = e.target.files && e.target.files[0];
+        if(f) importJSON(f);
+        e.target.value = "";
+      });
+
+      // modal
+      $("btnCloseModal").addEventListener("click", closeModal);
+      $("btnCancel").addEventListener("click", closeModal);
+      $("modalBack").addEventListener("click", (e) => {
+        if(e.target === $("modalBack")) closeModal();
+      });
+
+      $("btnSave").addEventListener("click", () => {
+        if(state.role !== "admin") return;
+        const data = {
+          name: $("mName").value,
+          email: $("mEmail").value,
+          platform: $("mPlatform").value,
+          psnId: $("mPSN").value,
+          responsible: $("mResp").value,
+        };
+        upsertMember(data);
+      });
+
+      // auto session
+      const ses = getSession();
+      if(ses && (ses.role === "admin" || ses.role === "view")){
+        state.role = ses.role;
+        enterApp();
+      }
+    }
+
+    init();
+  </script>
+</body>
+</html>
