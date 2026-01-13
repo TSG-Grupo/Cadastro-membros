@@ -13,9 +13,6 @@
   <style>
     :root{
       --bg:#0b0f17;
-      --panel:#0f1624;
-      --card:#121b2c;
-      --soft:#16233a;
       --text:#eaf0ff;
       --muted:#aab6d3;
       --line:rgba(255,255,255,.08);
@@ -23,7 +20,6 @@
       --danger:#ff5b7a;
       --ok:#49e2b1;
 
-      --r:16px;
       --shadow: 0 12px 30px rgba(0,0,0,.35);
       --shadow2: 0 10px 24px rgba(0,0,0,.28);
     }
@@ -34,25 +30,28 @@
       font-family: system-ui,-apple-system,Segoe UI,Roboto,Ubuntu,Cantarell,Noto Sans,Arial,sans-serif;
       background: radial-gradient(1200px 700px at 30% -10%, rgba(122,162,255,.22), transparent 55%),
                   radial-gradient(900px 600px at 90% 10%, rgba(73,226,177,.12), transparent 50%),
-                  var(--bg);
+                  #0b0f17;
       color:var(--text);
     }
-    a{color:inherit}
     .wrap{min-height:100%; display:flex; align-items:center; justify-content:center; padding:18px}
+
+    /* App container scrolls (so topbar can stick inside) */
     .app{
       width:min(1040px, 100%);
       background: rgba(15,22,36,.7);
       border:1px solid var(--line);
       border-radius: 22px;
       box-shadow: var(--shadow);
-      overflow:hidden;
+      overflow:auto;
+      max-height: 92vh;
       backdrop-filter: blur(10px);
     }
 
-    /* Top brand */
-    .brand{
-      display:flex; align-items:center; gap:12px;
-    }
+    .screen{display:none}
+    .screen.active{display:block}
+
+    /* Brand */
+    .brand{ display:flex; align-items:center; gap:12px; }
     .logo{
       width:44px;height:44px;border-radius:14px;
       background: linear-gradient(135deg, rgba(122,162,255,.95), rgba(73,226,177,.85));
@@ -62,30 +61,11 @@
       box-shadow: 0 10px 20px rgba(0,0,0,.25);
       user-select:none;
     }
-    .brand h1{
-      margin:0;
-      font-size: 16px;
-      letter-spacing:.2px;
-      font-weight: 750;
-      line-height: 1.1;
-    }
-    .brand p{
-      margin:0;
-      color:var(--muted);
-      font-size:12px;
-    }
-
-    /* Screens */
-    .screen{display:none}
-    .screen.active{display:block}
+    .brand h1{ margin:0; font-size:16px; letter-spacing:.2px; font-weight:750; line-height:1.1; }
+    .brand p{ margin:0; color:var(--muted); font-size:12px; }
 
     /* Login */
-    .login{
-      padding:22px;
-      display:grid;
-      grid-template-columns: 1fr;
-      gap:16px;
-    }
+    .login{ padding:22px; display:grid; grid-template-columns: 1fr; gap:16px; }
     .loginCard{
       background: rgba(18,27,44,.82);
       border:1px solid var(--line);
@@ -93,24 +73,7 @@
       box-shadow: var(--shadow2);
       padding:18px;
     }
-    .loginTitle{
-      display:flex; justify-content:space-between; align-items:flex-start; gap:12px;
-    }
-    .loginTitle .big{
-      font-size: 18px;
-      font-weight: 800;
-      margin:0;
-    }
-    .loginTitle .small{
-      margin:6px 0 0;
-      color:var(--muted);
-      font-size: 13px;
-      line-height:1.35;
-    }
-    .seg{
-      display:flex; gap:8px; flex-wrap:wrap;
-      margin-top:10px;
-    }
+    .seg{ display:flex; gap:8px; flex-wrap:wrap; margin-top:10px; }
     .pill{
       padding:9px 12px;
       border-radius: 999px;
@@ -126,16 +89,8 @@
       border-color: rgba(122,162,255,.35);
       color: var(--text);
     }
-    .form{
-      display:grid; gap:10px;
-      margin-top:14px;
-    }
-    label{
-      font-size:12px;
-      color:var(--muted);
-      display:block;
-      margin-bottom:6px;
-    }
+    .form{ display:grid; gap:10px; margin-top:14px; }
+    label{ font-size:12px; color:var(--muted); display:block; margin-bottom:6px; }
     .field{
       background: rgba(10,14,22,.55);
       border:1px solid var(--line);
@@ -145,15 +100,8 @@
       outline:none;
       width:100%;
     }
-    .row{
-      display:grid;
-      grid-template-columns: 1fr;
-      gap:10px;
-    }
-    .btnRow{
-      display:flex; gap:10px; flex-wrap:wrap;
-      margin-top:8px;
-    }
+    .row{ display:grid; grid-template-columns: 1fr; gap:10px; }
+    .btnRow{ display:flex; gap:10px; flex-wrap:wrap; margin-top:8px; }
     .btn{
       border:1px solid var(--line);
       background: rgba(18,27,44,.7);
@@ -161,35 +109,20 @@
       padding:11px 14px;
       border-radius: 14px;
       cursor:pointer;
-      font-weight: 650;
-      font-size: 13px;
+      font-weight:650;
+      font-size:13px;
       display:inline-flex; gap:10px; align-items:center;
       transition: transform .06s ease, background .2s ease, opacity .2s ease;
       user-select:none;
+      white-space: nowrap;
     }
     .btn:hover{background: rgba(18,27,44,.95)}
     .btn:active{transform: translateY(1px)}
-    .btn.primary{
-      background: rgba(122,162,255,.18);
-      border-color: rgba(122,162,255,.35);
-    }
-    .btn.danger{
-      background: rgba(255,91,122,.12);
-      border-color: rgba(255,91,122,.32);
-    }
-    .btn.ghost{
-      background: transparent;
-    }
-    .btn:disabled{
-      opacity:.45;
-      cursor:not-allowed;
-    }
-    .hint{
-      color: var(--muted);
-      font-size: 12px;
-      line-height:1.35;
-      margin-top: 8px;
-    }
+    .btn.primary{ background: rgba(122,162,255,.18); border-color: rgba(122,162,255,.35); }
+    .btn.danger{ background: rgba(255,91,122,.12); border-color: rgba(255,91,122,.32); }
+    .btn.ghost{ background: transparent; }
+    .btn:disabled{ opacity:.45; cursor:not-allowed; }
+    .hint{ color: var(--muted); font-size:12px; line-height:1.35; margin-top: 8px; }
     .note{
       border:1px dashed rgba(255,255,255,.14);
       border-radius: 16px;
@@ -199,17 +132,20 @@
       font-size: 12px;
       line-height: 1.45;
     }
+    .hr{ height:1px; background: var(--line); margin: 10px 0; }
 
     /* Main */
     .topbar{
+      position: sticky;
+      top: 0;
+      z-index: 40;
       padding:16px 18px;
       border-bottom:1px solid var(--line);
       display:flex; align-items:center; justify-content:space-between; gap:12px;
-      background: rgba(15,22,36,.6);
+      background: rgba(15,22,36,.82);
+      backdrop-filter: blur(10px);
     }
-    .topActions{
-      display:flex; gap:10px; flex-wrap:wrap; align-items:center; justify-content:flex-end;
-    }
+    .topActions{ display:flex; gap:10px; flex-wrap:wrap; align-items:center; justify-content:flex-end; }
     .badge{
       padding:8px 10px;
       border-radius: 999px;
@@ -219,11 +155,8 @@
       background: rgba(18,27,44,.55);
       user-select:none;
     }
-    .content{
-      padding: 16px 18px 18px;
-      display:grid;
-      gap:14px;
-    }
+
+    .content{ padding: 16px 18px 18px; display:grid; gap:14px; }
     .panel{
       background: rgba(18,27,44,.65);
       border:1px solid var(--line);
@@ -231,30 +164,40 @@
       padding: 14px;
       box-shadow: var(--shadow2);
     }
-    .toolbar{
-      display:flex; gap:10px; flex-wrap:wrap; align-items:center;
-    }
+    .toolbar{ display:flex; gap:10px; flex-wrap:wrap; align-items:center; }
     .toolbar .grow{flex:1}
     .toolbar .field{padding:11px 12px}
-    .countBox{
-      display:flex; align-items:center; justify-content:space-between; gap:10px;
+
+    /* Found line */
+    .foundLine{
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:10px;
+      flex-wrap:wrap;
+      margin-bottom: 10px;
     }
-    .countBox .n{
-      font-size: 28px;
-      font-weight: 900;
-      letter-spacing: -0.5px;
-    }
-    .countBox .t{
+    .foundText{
       color: var(--muted);
-      font-size: 12px;
-      line-height:1.2;
+      font-size: 13px;
+      line-height: 1.2;
     }
 
-    /* List - mobile cards */
-    .list{
-      display:grid;
-      gap:10px;
+    /* Chips */
+    .chips{ display:flex; gap:6px; flex-wrap:wrap; justify-content:flex-end }
+    .chip{
+      padding:6px 8px;
+      border-radius: 999px;
+      border:1px solid var(--line);
+      background: rgba(18,27,44,.55);
+      color: var(--muted);
+      font-size: 11px;
+      user-select:none;
+      white-space:nowrap;
     }
+
+    /* List */
+    .list{ display:grid; gap:10px; }
     .member{
       border:1px solid var(--line);
       background: rgba(10,14,22,.35);
@@ -270,33 +213,11 @@
       border-color: rgba(122,162,255,.55);
       background: rgba(122,162,255,.10);
     }
-    .memberTop{
-      display:flex; align-items:flex-start; justify-content:space-between; gap:10px;
-    }
-    .memberName{
-      font-weight: 850;
-      letter-spacing:.2px;
-      margin:0;
-    }
-    .chips{display:flex; gap:6px; flex-wrap:wrap; justify-content:flex-end}
-    .chip{
-      padding:6px 8px;
-      border-radius: 999px;
-      border:1px solid var(--line);
-      background: rgba(18,27,44,.55);
-      color: var(--muted);
-      font-size: 11px;
-      user-select:none;
-      white-space:nowrap;
-    }
-    .chip.ok{border-color: rgba(73,226,177,.32); background: rgba(73,226,177,.10); color: var(--text)}
-    .kv{
-      display:grid; gap:6px;
-      color: var(--muted);
-      font-size: 12px;
-      line-height:1.35;
-    }
-    .kv b{color: var(--text); font-weight: 700}
+    .memberTop{ display:flex; align-items:flex-start; justify-content:space-between; gap:10px; }
+    .memberName{ font-weight:850; letter-spacing:.2px; margin:0; }
+    .chip.ok{ border-color: rgba(73,226,177,.32); background: rgba(73,226,177,.10); color: var(--text) }
+    .kv{ display:grid; gap:6px; color: var(--muted); font-size:12px; line-height:1.35; }
+    .kv b{ color: var(--text); font-weight:700 }
     .empty{
       color: var(--muted);
       font-size: 13px;
@@ -332,22 +253,11 @@
       border-bottom:1px solid var(--line);
       display:flex; align-items:center; justify-content:space-between; gap:10px;
     }
-    .modalHead h2{
-      margin:0;
-      font-size: 14px;
-      letter-spacing:.2px;
-    }
-    .modalBody{padding: 14px 16px 16px}
-    .grid2{
-      display:grid;
-      grid-template-columns: 1fr;
-      gap:10px;
-    }
-    .hr{
-      height:1px;
-      background: var(--line);
-      margin: 10px 0;
-    }
+    .modalHead h2{ margin:0; font-size:14px; letter-spacing:.2px; }
+    .modalBody{ padding: 14px 16px 16px }
+    .grid2{ display:grid; grid-template-columns: 1fr; gap:10px; }
+
+    /* Toast */
     .toast{
       position: fixed;
       left: 50%;
@@ -369,6 +279,27 @@
     }
     .toast.show{display:block}
 
+    /* Floating to top (blue circle like Lista de Jogos) */
+    .toTop{
+      position: fixed;
+      right: 18px;
+      bottom: 18px;
+      width: 76px;
+      height: 76px;
+      border-radius: 999px;
+      border: none;
+      background: #1f73e6;
+      color: #fff;
+      box-shadow: 0 14px 30px rgba(0,0,0,.35);
+      cursor: pointer;
+      display: none;
+      z-index: 90;
+      user-select:none;
+    }
+    .toTop.show{ display:block; }
+    .toTop:active{ transform: translateY(1px); }
+    .toTop svg{ width: 34px; height: 34px; display:block; margin:auto; }
+
     @media (min-width: 760px){
       .login{grid-template-columns: 1.1fr .9fr; align-items:start}
       .row{grid-template-columns: 1fr 1fr}
@@ -386,20 +317,18 @@
       <section id="loginScreen" class="screen active">
         <div class="login">
           <div class="loginCard">
-            <div class="loginTitle">
-              <div>
-                <div class="brand">
-                  <div class="logo" aria-label="Logo TSG">TSG</div>
-                  <div>
-                    <h1>CADASTRO DE MEMBROS</h1>
-                    <p>Trade & Share Games • PS4 / PS5</p>
-                  </div>
+            <div>
+              <div class="brand">
+                <div class="logo" aria-label="Logo TSG">TSG</div>
+                <div>
+                  <h1>CADASTRO DE MEMBROS</h1>
+                  <p>Trade & Share Games • PS4 / PS5</p>
                 </div>
-                <p class="small" style="margin-top:12px">
-                  Acesso <b>Admin</b> permite incluir/editar/excluir.  
-                  <b>Visualização</b> é somente leitura.
-                </p>
               </div>
+              <p class="hint" style="margin-top:12px">
+                Acesso <b>Admin</b> permite incluir/editar/excluir.  
+                <b>Visualização</b> é somente leitura.
+              </p>
             </div>
 
             <div class="seg" role="tablist" aria-label="Modo de acesso">
@@ -441,17 +370,16 @@
           </div>
 
           <div class="loginCard">
-            <h3 style="margin:0 0 8px; font-size:14px; letter-spacing:.2px">Boas melhorias (já incluídas)</h3>
+            <h3 style="margin:0 0 8px; font-size:14px; letter-spacing:.2px">Recursos</h3>
             <div class="note">
-              • Busca + filtro por plataforma  
-              • Exportar/Importar JSON (backup)  
-              • Relatório PDF do que estiver filtrado  
-              • Interface mobile-first (cards)  
-              • Sessão por papel (Admin / View)  
+              • Busca por campo (Todos / Nome / Plataforma / PSN / Responsável)  
+              • Encontrados “xx de yy”  
+              • Ordenar (A–Z ou Registro)  
+              • Exportar/Importar JSON • PDF  
+              • Botão flutuante para topo  
               <div class="hr"></div>
-              <b>Sobre segurança:</b> no GitHub Pages tudo é client-side.  
-              Isso impede “segurança forte” (senha e dados ficam acessíveis no código/navegador).
-              Se você quiser segurança real + banco compartilhado, te explico abaixo como ligar num backend (Supabase/Firestore).
+              <b>Nota:</b> em GitHub Pages (client-side) não existe segurança forte.  
+              Para segurança real + banco compartilhado, Firebase (Auth + regras).
             </div>
           </div>
         </div>
@@ -459,6 +387,7 @@
 
       <!-- MAIN SCREEN -->
       <section id="mainScreen" class="screen">
+        <!-- Topbar: sempre visível, com contador discreto -->
         <div class="topbar">
           <div class="brand">
             <div class="logo">TSG</div>
@@ -468,33 +397,40 @@
             </div>
           </div>
           <div class="topActions">
+            <span id="topMembers" class="badge">0 membros</span>
             <span id="dbStatus" class="badge">Local DB</span>
             <button id="btnLogout" class="btn">Sair</button>
           </div>
         </div>
 
         <div class="content">
+          <!-- Card de busca e ações -->
           <div class="panel">
-            <div class="countBox">
-              <div>
-                <div id="count" class="n">0</div>
-                <div class="t">membros cadastrados</div>
-              </div>
+            <div class="foundLine">
+              <div id="foundText" class="foundText">Encontrados 0 de 0 cadastrados.</div>
               <div class="chips">
                 <span id="selectedBadge" class="chip" style="display:none">Selecionado</span>
                 <span id="filterBadge" class="chip" style="display:none">Filtro ativo</span>
               </div>
             </div>
 
-            <div class="hr"></div>
-
             <div class="toolbar">
-              <input id="q" class="field grow" placeholder="Buscar por nome, email, PSN ou responsável..." />
-              <select id="platformFilter" class="field" style="max-width:180px">
-                <option value="">Plataforma: Todas</option>
-                <option value="PS5">PS5</option>
-                <option value="PS4">PS4</option>
+              <input id="q" class="field grow" placeholder="Buscar..." />
+
+              <select id="filterBy" class="field" style="max-width:190px">
+                <option value="all">Filtrar por: Todos</option>
+                <option value="name">Nome</option>
+                <option value="platform">Plataforma</option>
+                <option value="psnId">ID PSN</option>
+                <option value="responsible">Responsável</option>
               </select>
+
+              <select id="sortBy" class="field" style="max-width:210px">
+                <option value="alpha">Ordenar: A–Z</option>
+                <option value="created">Ordenar: Registro</option>
+              </select>
+
+              <button id="btnClearSearch" class="btn">Limpar</button>
             </div>
 
             <div class="btnRow" style="margin-top:12px">
@@ -512,6 +448,7 @@
             </div>
           </div>
 
+          <!-- Lista -->
           <div class="panel">
             <div id="list" class="list"></div>
             <div id="empty" class="empty" style="display:none">
@@ -573,23 +510,26 @@
 
   <div id="toast" class="toast"></div>
 
+  <!-- Floating to top (blue circle) -->
+  <button id="btnToTop" class="toTop" aria-label="Voltar ao topo" title="Voltar ao topo">
+    <!-- Arrow up (white) -->
+    <svg viewBox="0 0 24 24" aria-hidden="true">
+      <path fill="currentColor" d="M12 4l7 7h-4v9H9v-9H5l7-7z"/>
+    </svg>
+  </button>
+
   <script>
     /**********************
-     * CONFIG (troque aqui)
+     * CONFIG
      **********************/
     const APP = {
       STORAGE_KEY: "TSG_MEMBERS_DB_V1",
       SESSION_KEY: "TSG_MEMBERS_SESSION_V1",
-      // Credenciais padrão (controle básico — NÃO é “segurança forte” em GitHub Pages)
       ADMIN_USER: "admin",
-      // hash de "tsgadmin" + SALT (gerado abaixo)
       SALT: "TSG::2026",
-      ADMIN_PASS_HASH: null, // preenchido na init
+      ADMIN_PASS_HASH: null,
     };
 
-    /**********************
-     * Helpers
-     **********************/
     const $ = (id) => document.getElementById(id);
 
     function toast(msg){
@@ -603,7 +543,6 @@
     function uid(){
       return crypto.randomUUID ? crypto.randomUUID() : String(Date.now()) + Math.random().toString(16).slice(2);
     }
-
     function nowISO(){ return new Date().toISOString(); }
 
     function normalize(s){
@@ -621,8 +560,17 @@
       return Array.from(new Uint8Array(hash)).map(b=>b.toString(16).padStart(2,"0")).join("");
     }
 
+    function escapeHTML(s){
+      return (s ?? "").toString()
+        .replaceAll("&","&amp;")
+        .replaceAll("<","&lt;")
+        .replaceAll(">","&gt;")
+        .replaceAll('"',"&quot;")
+        .replaceAll("'","&#039;");
+    }
+
     /**********************
-     * Local DB (localStorage)
+     * Local DB
      **********************/
     function loadDB(){
       try{
@@ -659,17 +607,15 @@
      * State
      **********************/
     let state = {
-      role: "view", // "admin" | "view"
+      role: "view",          // "admin" | "view"
       selectedId: null,
       editingId: null,
       members: [],
       q: "",
-      platform: "",
+      filterBy: "all",       // all | name | platform | psnId | responsible
+      sortBy: "alpha",       // alpha | created
     };
 
-    /**********************
-     * UI Switch
-     **********************/
     function showScreen(name){
       $("loginScreen").classList.remove("active");
       $("mainScreen").classList.remove("active");
@@ -684,53 +630,78 @@
       $("btnEdit").disabled = !isAdmin || !state.selectedId;
       $("btnDel").disabled = !isAdmin || !state.selectedId;
 
-      // PDF sempre habilitado (pedido)
       $("btnPdf").disabled = false;
 
-      // Export/Import: se quiser, pode deixar só admin. Aqui deixei admin para evitar bagunça.
       $("btnExport").disabled = !isAdmin;
       $("btnImport").disabled = !isAdmin;
     }
 
     function updateBadges(){
       $("selectedBadge").style.display = state.selectedId ? "inline-flex" : "none";
-
-      const hasFilter = (state.q && state.q.trim().length > 0) || (state.platform && state.platform.length > 0);
+      const hasFilter =
+        (state.q && state.q.trim().length > 0) ||
+        (state.filterBy && state.filterBy !== "all");
       $("filterBadge").style.display = hasFilter ? "inline-flex" : "none";
+    }
+
+    /**********************
+     * Filtering (search by chosen field)
+     **********************/
+    function filteredMembers(){
+      const qn = normalize(state.q);
+      if(!qn) return state.members;
+
+      const key = state.filterBy;
+
+      return state.members.filter(m => {
+        let hay = "";
+        if(key === "name") hay = m.name;
+        else if(key === "platform") hay = m.platform;
+        else if(key === "psnId") hay = m.psnId;
+        else if(key === "responsible") hay = m.responsible;
+        else hay = [m.name, m.email, m.platform, m.psnId, m.responsible].join(" ");
+
+        return normalize(hay).includes(qn);
+      });
+    }
+
+    /**********************
+     * Sorting
+     **********************/
+    function sortMembers(arr){
+      const items = [...arr];
+
+      if(state.sortBy === "created"){
+        // Ordem de registro: mais recente primeiro
+        items.sort((a,b) => new Date(b.createdAt) - new Date(a.createdAt));
+        return items;
+      }
+
+      // Ordem alfabética (A–Z), ignorando acentos
+      items.sort((a,b) =>
+        (a.name || "").localeCompare((b.name || ""), "pt-BR", { sensitivity: "base" })
+      );
+      return items;
     }
 
     /**********************
      * Render
      **********************/
-    function filteredMembers(){
-      const qn = normalize(state.q);
-      const plat = state.platform;
-
-      return state.members.filter(m => {
-        const okPlat = !plat || m.platform === plat;
-        if(!okPlat) return false;
-
-        if(!qn) return true;
-
-        const hay = normalize([
-          m.name, m.email, m.platform, m.psnId, m.responsible
-        ].join(" "));
-        return hay.includes(qn);
-      });
-    }
-
     function render(){
       const list = $("list");
       list.innerHTML = "";
 
-      const items = filteredMembers();
-      $("count").textContent = String(state.members.length);
+      const total = state.members.length;
+      const items = sortMembers(filteredMembers());
+      const found = items.length;
 
-      if(items.length === 0){
-        $("empty").style.display = "block";
-      }else{
-        $("empty").style.display = "none";
-      }
+      // Topbar counter (discreto)
+      $("topMembers").textContent = `${total} membros`;
+
+      // Found line per requirement
+      $("foundText").textContent = `Encontrados ${found} de ${total} cadastrados.`;
+
+      $("empty").style.display = (items.length === 0) ? "block" : "none";
 
       for(const m of items){
         const el = document.createElement("div");
@@ -762,15 +733,6 @@
 
       updateBadges();
       setRoleUI();
-    }
-
-    function escapeHTML(s){
-      return (s ?? "").toString()
-        .replaceAll("&","&amp;")
-        .replaceAll("<","&lt;")
-        .replaceAll(">","&gt;")
-        .replaceAll('"',"&quot;")
-        .replaceAll("'","&#039;");
     }
 
     /**********************
@@ -817,11 +779,7 @@
       if(state.editingId){
         const idx = db.findIndex(x => x.id === state.editingId);
         if(idx === -1){ toast("Registro não encontrado."); return; }
-        db[idx] = {
-          ...db[idx],
-          ...data,
-          updatedAt: nowISO(),
-        };
+        db[idx] = { ...db[idx], ...data, updatedAt: nowISO() };
         saveDB(db);
         toast("Membro atualizado.");
       }else{
@@ -865,7 +823,7 @@
      * PDF Report
      **********************/
     function generatePDF(){
-      const items = filteredMembers();
+      const items = sortMembers(filteredMembers()); // respeita filtro + ordenação
       const title = "TSG • Cadastro de Membros";
       const sub = `Gerado em ${new Date().toLocaleString("pt-BR")} • Registros: ${items.length}`;
 
@@ -907,12 +865,7 @@
      **********************/
     function exportJSON(){
       const db = loadDB();
-      const payload = {
-        app: "TSG_MEMBERS",
-        version: 1,
-        exportedAt: nowISO(),
-        data: db,
-      };
+      const payload = { app: "TSG_MEMBERS", version: 1, exportedAt: nowISO(), data: db };
 
       const blob = new Blob([JSON.stringify(payload, null, 2)], { type: "application/json" });
       const url = URL.createObjectURL(blob);
@@ -932,7 +885,6 @@
         const payload = JSON.parse(text);
         if(!payload || !payload.data || !Array.isArray(payload.data)) throw new Error("Formato inválido.");
 
-        // Validação básica
         const clean = payload.data.map(x => ({
           id: x.id || uid(),
           name: (x.name || "").trim(),
@@ -957,7 +909,7 @@
     }
 
     /**********************
-     * Login logic
+     * Login
      **********************/
     function setLoginMode(mode){
       const isAdmin = mode === "admin";
@@ -971,15 +923,10 @@
       const u = $("loginUser").value.trim();
       const p = $("loginPass").value;
 
-      if(u !== APP.ADMIN_USER){
-        toast("Login inválido.");
-        return;
-      }
+      if(u !== APP.ADMIN_USER){ toast("Login inválido."); return; }
+
       const hash = await sha256(p + "::" + APP.SALT);
-      if(hash !== APP.ADMIN_PASS_HASH){
-        toast("Senha inválida.");
-        return;
-      }
+      if(hash !== APP.ADMIN_PASS_HASH){ toast("Senha inválida."); return; }
 
       state.role = "admin";
       setSession({ role: "admin", at: nowISO() });
@@ -995,7 +942,6 @@
     function enterApp(){
       state.members = loadDB();
 
-      // Seed opcional (se estiver vazio, cria 1 exemplo e avisa)
       if(state.members.length === 0){
         const seed = [{
           id: uid(),
@@ -1012,30 +958,48 @@
         toast("Criei 1 registro de exemplo. Você pode editar/excluir.");
       }
 
+      // reset UI (padrão: A–Z)
+      state.selectedId = null;
+      state.q = "";
+      state.filterBy = "all";
+      state.sortBy = "alpha";
+      $("q").value = "";
+      $("filterBy").value = "all";
+      $("sortBy").value = "alpha";
+
       showScreen("mainScreen");
       setRoleUI();
       render();
+
+      document.querySelector(".app").scrollTo({ top: 0 });
     }
 
     function logout(){
       clearSession();
       state.selectedId = null;
       state.editingId = null;
+
       state.q = "";
-      state.platform = "";
+      state.filterBy = "all";
+      state.sortBy = "alpha";
+
       $("q").value = "";
-      $("platformFilter").value = "";
+      $("filterBy").value = "all";
+      $("sortBy").value = "alpha";
       $("loginPass").value = "";
+
       showScreen("loginScreen");
       setLoginMode("admin");
       toast("Você saiu.");
+
+      document.querySelector(".app").scrollTo({ top: 0 });
     }
 
     /**********************
-     * Init & Events
+     * Init
      **********************/
     async function init(){
-      // Gera o hash padrão para "tsgadmin"
+      // Hash padrão para "tsgadmin"
       APP.ADMIN_PASS_HASH = await sha256("tsgadmin" + "::" + APP.SALT);
 
       // Tabs login
@@ -1058,12 +1022,30 @@
 
       $("q").addEventListener("input", (e) => {
         state.q = e.target.value;
+        state.selectedId = null;
         render();
       });
 
-      $("platformFilter").addEventListener("change", (e) => {
-        state.platform = e.target.value;
+      $("filterBy").addEventListener("change", (e) => {
+        state.filterBy = e.target.value;
+        state.selectedId = null;
         render();
+      });
+
+      $("sortBy").addEventListener("change", (e) => {
+        state.sortBy = e.target.value;
+        state.selectedId = null;
+        render();
+      });
+
+      $("btnClearSearch").addEventListener("click", () => {
+        state.q = "";
+        state.filterBy = "all";
+        $("q").value = "";
+        $("filterBy").value = "all";
+        state.selectedId = null;
+        render();
+        toast("Busca limpa.");
       });
 
       $("btnAdd").addEventListener("click", () => {
@@ -1121,11 +1103,27 @@
         upsertMember(data);
       });
 
-      // auto session
+      // Floating to-top button based on scroll
+      const appScroller = document.querySelector(".app");
+      const btnToTop = $("btnToTop");
+
+      function updateToTopBtn(){
+        const mainActive = $("mainScreen").classList.contains("active");
+        if(!mainActive){ btnToTop.classList.remove("show"); return; }
+        if(appScroller.scrollTop > 240) btnToTop.classList.add("show");
+        else btnToTop.classList.remove("show");
+      }
+
+      appScroller.addEventListener("scroll", updateToTopBtn);
+      btnToTop.addEventListener("click", () => appScroller.scrollTo({ top: 0, behavior: "smooth" }));
+
+      // Auto session
       const ses = getSession();
       if(ses && (ses.role === "admin" || ses.role === "view")){
         state.role = ses.role;
         enterApp();
+      }else{
+        updateToTopBtn();
       }
     }
 
