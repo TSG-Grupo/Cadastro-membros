@@ -1,0 +1,217 @@
+{
+  "app": "TSG_MEMBERS",
+  "version": 1,
+  "exportedAt": "2026-01-13T15:38:30Z",
+  "data": [
+    {
+      "id": "f11b6bda-1487-48a9-91bf-02f839f02e61",
+      "name": "Helliott",
+      "email": "elias.bourlot@gmail.com",
+      "platform": "PS5",
+      "psnId": "Helliott_666",
+      "responsible": "Nucleo",
+      "createdAt": "2026-01-13T15:38:30Z",
+      "updatedAt": "2026-01-13T15:38:30Z"
+    },
+    {
+      "id": "f7d1a366-0e98-422b-9a5b-a7d01e0606b5",
+      "name": "Cristiano",
+      "email": "Cristiano.pinheiro@gmail.com",
+      "platform": "PS5",
+      "psnId": "Mrgrivy",
+      "responsible": "Nucleo",
+      "createdAt": "2026-01-13T15:38:30Z",
+      "updatedAt": "2026-01-13T15:38:30Z"
+    },
+    {
+      "id": "f6cd5b5b-6a3c-40fb-80b7-b519240a143e",
+      "name": "Fernando Tizzo",
+      "email": "fernandotizzo@icloud.com",
+      "platform": "PS5",
+      "psnId": "Fernando Tizzo",
+      "responsible": "Nucleo",
+      "createdAt": "2026-01-13T15:38:30Z",
+      "updatedAt": "2026-01-13T15:38:30Z"
+    },
+    {
+      "id": "e9e3035e-9777-4c44-8630-fc0b03b64b19",
+      "name": "Rodolfo Pelarin",
+      "email": "rcpelarin@hotmail.com",
+      "platform": "PS5",
+      "psnId": "rcpelarin",
+      "responsible": "Nucleo",
+      "createdAt": "2026-01-13T15:38:30Z",
+      "updatedAt": "2026-01-13T15:38:30Z"
+    },
+    {
+      "id": "3830f4aa-8287-416e-90ed-7ced21cc7785",
+      "name": "Victor (Victorsemterra)",
+      "email": "Victorsouza171998@gmail.com",
+      "platform": "PS5",
+      "psnId": "victorsemterra",
+      "responsible": "Cristiano",
+      "createdAt": "2026-01-13T15:38:30Z",
+      "updatedAt": "2026-01-13T15:38:30Z"
+    },
+    {
+      "id": "c388b8e2-3786-4294-8a8b-7a0a9dde6dc4",
+      "name": "Lotric",
+      "email": "demonking.ltc@gmail.com",
+      "platform": "PS5",
+      "psnId": "luan_yagami27",
+      "responsible": "Cristiano",
+      "createdAt": "2026-01-13T15:38:30Z",
+      "updatedAt": "2026-01-13T15:38:30Z"
+    },
+    {
+      "id": "f37a6738-fcd3-46b4-ae96-89a8809d2f7a",
+      "name": "Erasmo Cavalcante",
+      "email": "cavalcante.erasmo02@gmail.com",
+      "platform": "PS5",
+      "psnId": "erasmoeu",
+      "responsible": "Grupo",
+      "createdAt": "2026-01-13T15:38:30Z",
+      "updatedAt": "2026-01-13T15:38:30Z"
+    },
+    {
+      "id": "be48f5d9-f6df-48c0-a03a-1aebc72c9526",
+      "name": "Anderson Octacilio Pinheiro",
+      "email": "andersonoctacilio@gmail.com",
+      "platform": "PS5",
+      "psnId": "giant080regular",
+      "responsible": "Cristiano",
+      "createdAt": "2026-01-13T15:38:30Z",
+      "updatedAt": "2026-01-13T15:38:30Z"
+    },
+    {
+      "id": "1b5cfb3e-85ba-4bfe-b59b-a32233e1686a",
+      "name": "Awyky",
+      "email": "",
+      "platform": "PS5",
+      "psnId": "",
+      "responsible": "Grupo",
+      "createdAt": "2026-01-13T15:38:30Z",
+      "updatedAt": "2026-01-13T15:38:30Z"
+    },
+    {
+      "id": "b2a49320-7033-45f2-b101-3b53fb65c2ee",
+      "name": "Dead Dragon",
+      "email": "",
+      "platform": "PS5",
+      "psnId": "",
+      "responsible": "Grupo",
+      "createdAt": "2026-01-13T15:38:30Z",
+      "updatedAt": "2026-01-13T15:38:30Z"
+    },
+    {
+      "id": "4ef33136-f315-4028-8dd2-bd4d3fd66e09",
+      "name": "Luis Claudio",
+      "email": "luiz-claudio2012@live.com",
+      "platform": "PS5",
+      "psnId": "luizclao",
+      "responsible": "Cristiano",
+      "createdAt": "2026-01-13T15:38:30Z",
+      "updatedAt": "2026-01-13T15:38:30Z"
+    },
+    {
+      "id": "56c6a680-3eb5-4933-b3e3-b9d8fb606ebf",
+      "name": "Johann Bauer",
+      "email": "johann_soledad_codorna@hotmail.com",
+      "platform": "PS5",
+      "psnId": "johann_codorna",
+      "responsible": "Grupo",
+      "createdAt": "2026-01-13T15:38:30Z",
+      "updatedAt": "2026-01-13T15:39:11Z"
+    },
+    {
+      "id": "1b90fdf5-fc3a-46bf-8814-c3d584b7b7e8",
+      "name": "Lukas MindX",
+      "email": "",
+      "platform": "PS5",
+      "psnId": "",
+      "responsible": "Rodolfo Pelarin",
+      "createdAt": "2026-01-13T15:38:30Z",
+      "updatedAt": "2026-01-13T15:38:30Z"
+    },
+    {
+      "id": "2ff21dca-14e2-4d96-a903-d37a47e49ff8",
+      "name": "Melissa Nascimento",
+      "email": "adolfinha63@gmail.com",
+      "platform": "PS5",
+      "psnId": "MelDarkDemon_",
+      "responsible": "Luis Claudio",
+      "createdAt": "2026-01-13T15:38:30Z",
+      "updatedAt": "2026-01-13T15:38:30Z"
+    },
+    {
+      "id": "8aea228f-61c3-48e8-8dd8-e9c91196285b",
+      "name": "Rodrigo Ribeiro",
+      "email": "",
+      "platform": "PS5",
+      "psnId": "",
+      "responsible": "Helliott",
+      "createdAt": "2026-01-13T15:38:30Z",
+      "updatedAt": "2026-01-13T15:38:30Z"
+    },
+    {
+      "id": "d657c1ed-5186-4c2b-92a8-313455e28d56",
+      "name": "Ronaldo Sampaio",
+      "email": "Ronaldo.smp93@gmail.com",
+      "platform": "PS5",
+      "psnId": "Ronaldoo_21",
+      "responsible": "Helliott",
+      "createdAt": "2026-01-13T15:38:30Z",
+      "updatedAt": "2026-01-13T15:38:30Z"
+    },
+    {
+      "id": "ee052d84-fd9f-4d4e-ae04-505d8c686b0f",
+      "name": "Tamires",
+      "email": "",
+      "platform": "PS5",
+      "psnId": "",
+      "responsible": "Grupo",
+      "createdAt": "2026-01-13T15:38:30Z",
+      "updatedAt": "2026-01-13T15:38:30Z"
+    },
+    {
+      "id": "83b390e4-28ba-4709-8bbb-c840b2ae58f8",
+      "name": "Th",
+      "email": "",
+      "platform": "PS5",
+      "psnId": "",
+      "responsible": "Grupo",
+      "createdAt": "2026-01-13T15:38:30Z",
+      "updatedAt": "2026-01-13T15:38:30Z"
+    },
+    {
+      "id": "d5b1d639-cd38-474a-a5cf-9393d687ad72",
+      "name": "Thyago Fernandes",
+      "email": "",
+      "platform": "PS5",
+      "psnId": "",
+      "responsible": "Grupo",
+      "createdAt": "2026-01-13T15:38:30Z",
+      "updatedAt": "2026-01-13T15:38:30Z"
+    },
+    {
+      "id": "755cdf30-0c67-47db-b981-7bdc7c597279",
+      "name": "Vinicius Donega",
+      "email": "",
+      "platform": "PS5",
+      "psnId": "",
+      "responsible": "Grupo",
+      "createdAt": "2026-01-13T15:38:30Z",
+      "updatedAt": "2026-01-13T15:38:30Z"
+    },
+    {
+      "id": "a0859dc8-9a3b-4fbf-89a3-9fd7b39bcbca",
+      "name": "Wanderson",
+      "email": "",
+      "platform": "PS5",
+      "psnId": "",
+      "responsible": "Cristiano",
+      "createdAt": "2026-01-13T15:38:30Z",
+      "updatedAt": "2026-01-13T15:38:30Z"
+    }
+  ]
+}
