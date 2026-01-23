@@ -2,7 +2,7 @@
 <html lang="pt-BR">
 <head>
   <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
   <title>TSG • Cadastro de Membros</title>
   <meta name="theme-color" content="#0b0f17" />
 
@@ -17,9 +17,8 @@
       --muted:#aab6d3;
       --line:rgba(255,255,255,.08);
       --accent:#7aa2ff;
-      --danger:#ff3b4f;
+      --danger:#ff5b7a;
       --ok:#49e2b1;
-      --blue:#1f73e6;
 
       --shadow: 0 12px 30px rgba(0,0,0,.35);
       --shadow2: 0 10px 24px rgba(0,0,0,.28);
@@ -29,18 +28,14 @@
     body{
       margin:0;
       font-family: system-ui,-apple-system,Segoe UI,Roboto,Ubuntu,Cantarell,Noto Sans,Arial,sans-serif;
-      background:
-        radial-gradient(1200px 700px at 30% -10%, rgba(122,162,255,.22), transparent 55%),
-        radial-gradient(900px 600px at 90% 10%, rgba(73,226,177,.12), transparent 50%),
-        var(--bg);
+      background: radial-gradient(1200px 700px at 30% -10%, rgba(122,162,255,.22), transparent 55%),
+                  radial-gradient(900px 600px at 90% 10%, rgba(73,226,177,.12), transparent 50%),
+                  #0b0f17;
       color:var(--text);
     }
-
-    /* iOS: evita zoom automático em inputs (>=16px) */
-    input, select, textarea, button { font-size:16px; }
-
     .wrap{min-height:100%; display:flex; align-items:center; justify-content:center; padding:18px}
 
+    /* App container scrolls (so topbar can stick inside) */
     .app{
       width:min(1040px, 100%);
       background: rgba(15,22,36,.7);
@@ -49,45 +44,25 @@
       box-shadow: var(--shadow);
       overflow:auto;
       max-height: 92vh;
-      scrollbar-gutter: stable;
       backdrop-filter: blur(10px);
-      -webkit-overflow-scrolling: touch;
     }
 
     .screen{display:none}
     .screen.active{display:block}
 
-    .panel{
-      background: rgba(18,27,44,.65);
-      border:1px solid var(--line);
-      border-radius: 22px;
-      padding: 14px;
-      box-shadow: var(--shadow2);
-    }
-
-    /* Brand / Logo */
-    .brand{ display:flex; align-items:center; gap:12px; min-width:0; }
-    .logoWrap{
+    /* Brand */
+    .brand{ display:flex; align-items:center; gap:12px; }
+    .logo{
       width:44px;height:44px;border-radius:14px;
-      overflow:hidden;
-      display:grid; place-items:center;
-      box-shadow: 0 10px 20px rgba(0,0,0,.25);
-      flex: 0 0 auto;
-      background: rgba(255,255,255,.06);
-      border: 1px solid rgba(255,255,255,.10);
-    }
-    .logoImg{ width:100%; height:100%; object-fit: cover; display:block; }
-    .logoFallback{
-      width:100%; height:100%;
-      display:grid; place-items:center;
-      color:#071018;
-      font-weight:900; letter-spacing:.5px;
       background: linear-gradient(135deg, rgba(122,162,255,.95), rgba(73,226,177,.85));
+      display:grid; place-items:center;
+      color:#071018; font-weight:900;
+      letter-spacing:.5px;
+      box-shadow: 0 10px 20px rgba(0,0,0,.25);
       user-select:none;
     }
-    .brandText{min-width:0}
-    .brandTitle{ margin:0; font-size:16px; letter-spacing:.2px; font-weight:850; line-height:1.1; }
-    .brandSub{ margin:2px 0 0; color:var(--muted); font-size:12px; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
+    .brand h1{ margin:0; font-size:16px; letter-spacing:.2px; font-weight:750; line-height:1.1; }
+    .brand p{ margin:0; color:var(--muted); font-size:12px; }
 
     /* Login */
     .login{ padding:22px; display:grid; grid-template-columns: 1fr; gap:16px; }
@@ -124,7 +99,6 @@
       color:var(--text);
       outline:none;
       width:100%;
-      font-size:16px;
     }
     .row{ display:grid; grid-template-columns: 1fr; gap:10px; }
     .btnRow{ display:flex; gap:10px; flex-wrap:wrap; margin-top:8px; }
@@ -141,55 +115,60 @@
       transition: transform .06s ease, background .2s ease, opacity .2s ease;
       user-select:none;
       white-space: nowrap;
-      -webkit-tap-highlight-color: transparent;
     }
     .btn:hover{background: rgba(18,27,44,.95)}
     .btn:active{transform: translateY(1px)}
     .btn.primary{ background: rgba(122,162,255,.18); border-color: rgba(122,162,255,.35); }
+    .btn.danger{ background: rgba(255,91,122,.12); border-color: rgba(255,91,122,.32); }
     .btn.ghost{ background: transparent; }
     .btn:disabled{ opacity:.45; cursor:not-allowed; }
+    .hint{ color: var(--muted); font-size:12px; line-height:1.35; margin-top: 8px; }
+    .note{
+      border:1px dashed rgba(255,255,255,.14);
+      border-radius: 16px;
+      padding:12px;
+      color: var(--muted);
+      background: rgba(10,14,22,.35);
+      font-size: 12px;
+      line-height: 1.45;
+    }
+    .hr{ height:1px; background: var(--line); margin: 10px 0; }
 
-    /* Main layout */
-    .stickyTop{
+    /* Main */
+    .topbar{
       position: sticky;
       top: 0;
-      z-index: 60;
-      padding: 16px 18px 10px;
-      background: rgba(15,22,36,.55);
+      z-index: 40;
+      padding:16px 18px;
+      border-bottom:1px solid var(--line);
+      display:flex; align-items:center; justify-content:space-between; gap:12px;
+      background: rgba(15,22,36,.82);
       backdrop-filter: blur(10px);
     }
-    .topCard{ display:flex; align-items:center; justify-content:space-between; gap:12px; }
-    .content{ padding: 6px 18px 18px; display:grid; gap:14px; }
-
-    /* Toolbar: busca e filtro na MESMA linha no mobile */
-    .toolbar{
-      display:flex;
-      gap:10px;
-      align-items:center;
-      width:100%;
-      flex-wrap:nowrap;
+    .topActions{ display:flex; gap:10px; flex-wrap:wrap; align-items:center; justify-content:flex-end; }
+    .badge{
+      padding:8px 10px;
+      border-radius: 999px;
+      border:1px solid var(--line);
+      color: var(--muted);
+      font-size:12px;
+      background: rgba(18,27,44,.55);
+      user-select:none;
     }
-    .toolbar .grow{flex:1 1 auto; min-width:0;}
+
+    .content{ padding: 16px 18px 18px; display:grid; gap:14px; }
+    .panel{
+      background: rgba(18,27,44,.65);
+      border:1px solid var(--line);
+      border-radius: 22px;
+      padding: 14px;
+      box-shadow: var(--shadow2);
+    }
+    .toolbar{ display:flex; gap:10px; flex-wrap:wrap; align-items:center; }
+    .toolbar .grow{flex:1}
     .toolbar .field{padding:11px 12px}
 
-    /* Filtro menor, alinhado à direita */
-    #filterBy{
-      flex: 0 0 auto;
-      width: 132px; /* suficiente para “Responsável” */
-      max-width: 132px;
-      margin-left:auto;
-    }
-
-    /* Sort some no mobile (opcional). Mostra no desktop */
-    .toolbar #sortBy{ display:none; }
-    @media (min-width: 760px){
-      .login{grid-template-columns: 1.1fr .9fr; align-items:start}
-      .row{grid-template-columns: 1fr 1fr}
-      .toolbar{ flex-wrap:wrap; }
-      .toolbar #sortBy{ display:block; }
-      #filterBy{ width: 150px; max-width: 150px; }
-    }
-
+    /* Found line */
     .foundLine{
       display:flex;
       align-items:center;
@@ -198,8 +177,13 @@
       flex-wrap:wrap;
       margin-bottom: 10px;
     }
-    .foundText{ color: var(--muted); font-size: 13px; line-height: 1.2; }
+    .foundText{
+      color: var(--muted);
+      font-size: 13px;
+      line-height: 1.2;
+    }
 
+    /* Chips */
     .chips{ display:flex; gap:6px; flex-wrap:wrap; justify-content:flex-end }
     .chip{
       padding:6px 8px;
@@ -211,7 +195,6 @@
       user-select:none;
       white-space:nowrap;
     }
-    .chip.ok{ border-color: rgba(73,226,177,.32); background: rgba(73,226,177,.10); color: var(--text) }
 
     /* List */
     .list{ display:grid; gap:10px; }
@@ -223,7 +206,6 @@
       cursor:pointer;
       transition: transform .06s ease, background .2s ease, border-color .2s ease;
       display:grid; gap:8px;
-      -webkit-tap-highlight-color: transparent;
     }
     .member:hover{background: rgba(10,14,22,.55)}
     .member:active{transform: translateY(1px)}
@@ -231,79 +213,11 @@
       border-color: rgba(122,162,255,.55);
       background: rgba(122,162,255,.10);
     }
-
     .memberTop{ display:flex; align-items:flex-start; justify-content:space-between; gap:10px; }
-    .memberLeft{ min-width:0; flex: 1 1 auto; }
-    .nameRow{
-      display:flex;
-      align-items:baseline;
-      justify-content:space-between;
-      gap:10px;
-    }
-    .memberName{
-      font-weight:850;
-      letter-spacing:.2px;
-      margin:0;
-      min-width:0;
-      overflow:hidden;
-      text-overflow:ellipsis;
-      white-space:nowrap;
-    }
-    .platformTag{ flex: 0 0 auto; white-space:nowrap; }
-    .dateTag{
-      display:inline-flex;
-      margin-top:6px;
-      white-space:nowrap;
-      align-self:flex-end;
-    }
-
-    .kv{
-      display:grid;
-      gap:6px;
-      color: var(--muted);
-      font-size:12px;
-      line-height:1.35;
-      margin-top:10px;
-    }
+    .memberName{ font-weight:850; letter-spacing:.2px; margin:0; }
+    .chip.ok{ border-color: rgba(73,226,177,.32); background: rgba(73,226,177,.10); color: var(--text) }
+    .kv{ display:grid; gap:6px; color: var(--muted); font-size:12px; line-height:1.35; }
     .kv b{ color: var(--text); font-weight:700 }
-
-    /* Linha “Responsável” com ações à direita */
-    .kvLine{
-      display:flex;
-      align-items:center;
-      justify-content:space-between;
-      gap:10px;
-    }
-    .kvLine .left{
-      min-width:0;
-      overflow:hidden;
-      text-overflow: ellipsis;
-      white-space: nowrap;
-    }
-    .miniActions{
-      flex: 0 0 auto;
-      display:flex;
-      align-items:center;
-      gap:8px;
-    }
-    .iconBtn{
-      width:34px;
-      height:34px;
-      border-radius:999px;
-      border:1px solid rgba(255,255,255,.10);
-      background: var(--blue);
-      color:#fff;
-      display:grid;
-      place-items:center;
-      cursor:pointer;
-      padding:0;
-      box-shadow: 0 10px 20px rgba(0,0,0,.22);
-      -webkit-tap-highlight-color: transparent;
-      transition: transform .06s ease, filter .2s ease;
-    }
-    .iconBtn:active{ transform: translateY(1px); }
-    .iconBtn svg{ width:18px; height:18px; display:block; }
-
     .empty{
       color: var(--muted);
       font-size: 13px;
@@ -322,7 +236,7 @@
       align-items:center;
       justify-content:center;
       padding: 16px;
-      z-index: 80;
+      z-index: 50;
     }
     .modalBack.show{display:flex}
     .modal{
@@ -341,6 +255,7 @@
     }
     .modalHead h2{ margin:0; font-size:14px; letter-spacing:.2px; }
     .modalBody{ padding: 14px 16px 16px }
+    .grid2{ display:grid; grid-template-columns: 1fr; gap:10px; }
 
     /* Toast */
     .toast{
@@ -356,7 +271,7 @@
       display:none;
       color: var(--text);
       font-size: 13px;
-      z-index: 90;
+      z-index: 80;
       max-width: calc(100% - 24px);
       overflow:hidden;
       text-overflow: ellipsis;
@@ -364,33 +279,33 @@
     }
     .toast.show{display:block}
 
-    /* Floating buttons */
-    .fabWrap{
+    /* Floating to top (blue circle like Lista de Jogos) */
+    .toTop{
       position: fixed;
       right: 18px;
       bottom: 18px;
-      display:flex;
-      gap:12px;
-      z-index: 95;
-    }
-    .fab{
-      width: 57px;
-      height: 57px;
+      width: 76px;
+      height: 76px;
       border-radius: 999px;
       border: none;
-      background: var(--blue);
+      background: #1f73e6;
       color: #fff;
       box-shadow: 0 14px 30px rgba(0,0,0,.35);
       cursor: pointer;
-      display: grid;
-      place-items: center;
+      display: none;
+      z-index: 90;
       user-select:none;
-      -webkit-tap-highlight-color: transparent;
     }
-    .fab:active{ transform: translateY(1px); }
-    .fab svg{ width: 26px; height: 26px; display:block; }
-    .fab.hide{ display:none; }
-    .fab.exit{ background: var(--danger); color:#fff; }
+    .toTop.show{ display:block; }
+    .toTop:active{ transform: translateY(1px); }
+    .toTop svg{ width: 34px; height: 34px; display:block; margin:auto; }
+
+    @media (min-width: 760px){
+      .login{grid-template-columns: 1.1fr .9fr; align-items:start}
+      .row{grid-template-columns: 1fr 1fr}
+      .grid2{grid-template-columns: 1fr 1fr}
+      .member{padding:14px}
+    }
   </style>
 </head>
 
@@ -402,15 +317,18 @@
       <section id="loginScreen" class="screen active">
         <div class="login">
           <div class="loginCard">
-            <div class="brand">
-              <div class="logoWrap" aria-label="Logo do grupo">
-                <img id="logoImgLogin" class="logoImg" src="assets/tsg-logo.png" alt="Logo TSG" />
-                <div id="logoFallbackLogin" class="logoFallback" style="display:none">TSG</div>
+            <div>
+              <div class="brand">
+                <div class="logo" aria-label="Logo TSG">TSG</div>
+                <div>
+                  <h1>CADASTRO DE MEMBROS</h1>
+                  <p>Trade & Share Games • PS4 / PS5</p>
+                </div>
               </div>
-              <div class="brandText">
-                <h1 class="brandTitle">CADASTRO DE MEMBROS</h1>
-                <p class="brandSub">Trade &amp; Share Games • PS4 / PS5</p>
-              </div>
+              <p class="hint" style="margin-top:12px">
+                Acesso <b>Admin</b> permite incluir/editar/excluir.  
+                <b>Visualização</b> é somente leitura.
+              </p>
             </div>
 
             <div class="seg" role="tablist" aria-label="Modo de acesso">
@@ -430,16 +348,38 @@
                 </div>
               </div>
               <div class="btnRow">
-                <button id="btnLoginAdmin" class="btn primary" type="button">Entrar (Admin)</button>
-                <button id="btnGoView" class="btn ghost" type="button">Entrar em visualização</button>
+                <button id="btnLoginAdmin" class="btn primary">Entrar (Admin)</button>
+                <button id="btnGoView" class="btn ghost">Entrar em visualização</button>
+              </div>
+
+              <div class="hint">
+                Padrão: <b>login: admin</b> • <b>senha: tsgadmin</b> (troque no código).
               </div>
             </div>
 
             <div id="viewForm" class="form" style="display:none">
-              <div class="btnRow">
-                <button id="btnLoginView" class="btn primary" type="button">Entrar (Visualização)</button>
-                <button id="btnBackAdmin" class="btn ghost" type="button">Voltar</button>
+              <div class="note">
+                Modo visualização não altera dados.  
+                Ideal pra compartilhar o link com o grupo.
               </div>
+              <div class="btnRow">
+                <button id="btnLoginView" class="btn primary">Entrar (Visualização)</button>
+                <button id="btnBackAdmin" class="btn ghost">Voltar</button>
+              </div>
+            </div>
+          </div>
+
+          <div class="loginCard">
+            <h3 style="margin:0 0 8px; font-size:14px; letter-spacing:.2px">Recursos</h3>
+            <div class="note">
+              • Busca por campo (Todos / Nome / Plataforma / PSN / Responsável)  
+              • Encontrados “xx de yy”  
+              • Ordenar (A–Z ou Registro)  
+              • Exportar/Importar JSON • PDF  
+              • Botão flutuante para topo  
+              <div class="hr"></div>
+              <b>Nota:</b> em GitHub Pages (client-side) não existe segurança forte.  
+              Para segurança real + banco compartilhado, Firebase (Auth + regras).
             </div>
           </div>
         </div>
@@ -447,22 +387,24 @@
 
       <!-- MAIN SCREEN -->
       <section id="mainScreen" class="screen">
-        <div class="stickyTop">
-          <div class="panel topCard">
-            <div class="brand">
-              <div class="logoWrap" aria-label="Logo do grupo">
-                <img id="logoImgTop" class="logoImg" src="assets/tsg-logo.png" alt="Logo TSG" />
-                <div id="logoFallbackTop" class="logoFallback" style="display:none">TSG</div>
-              </div>
-              <div class="brandText">
-                <h1 class="brandTitle" style="font-size:14px">CADASTRO DE MEMBROS</h1>
-                <p id="topCountText" class="brandSub">0 membros cadastrados.</p>
-              </div>
+        <!-- Topbar: sempre visível, com contador discreto -->
+        <div class="topbar">
+          <div class="brand">
+            <div class="logo">TSG</div>
+            <div>
+              <h1 style="margin:0; font-size:14px; font-weight:850">CADASTRO DE MEMBROS</h1>
+              <p id="roleLabel" style="margin:2px 0 0; font-size:12px; color:var(--muted)">—</p>
             </div>
+          </div>
+          <div class="topActions">
+            <span id="topMembers" class="badge">0 membros</span>
+            <span id="dbStatus" class="badge">Local DB</span>
+            <button id="btnLogout" class="btn">Sair</button>
           </div>
         </div>
 
         <div class="content">
+          <!-- Card de busca e ações -->
           <div class="panel">
             <div class="foundLine">
               <div id="foundText" class="foundText">Encontrados 0 de 0 cadastrados.</div>
@@ -473,10 +415,10 @@
             </div>
 
             <div class="toolbar">
-              <input id="q" class="field grow" placeholder="Buscar..." inputmode="search" />
+              <input id="q" class="field grow" placeholder="Buscar..." />
 
-              <select id="filterBy" class="field">
-                <option value="all">Todos</option>
+              <select id="filterBy" class="field" style="max-width:190px">
+                <option value="all">Filtrar por: Todos</option>
                 <option value="name">Nome</option>
                 <option value="platform">Plataforma</option>
                 <option value="psnId">ID PSN</option>
@@ -488,18 +430,25 @@
                 <option value="created">Ordenar: Registro</option>
               </select>
 
-              <button id="btnClearSearch" class="btn" type="button">Limpar</button>
+              <button id="btnClearSearch" class="btn">Limpar</button>
             </div>
 
             <div class="btnRow" style="margin-top:12px">
-              <button id="btnAdd" class="btn primary" type="button">Incluir membro</button>
-              <button id="btnPdf" class="btn" type="button">Relatório PDF</button>
-              <button id="btnExport" class="btn" type="button">Exportar JSON</button>
-              <button id="btnImport" class="btn" type="button">Importar JSON</button>
+              <button id="btnAdd" class="btn primary">Incluir membro</button>
+              <button id="btnEdit" class="btn">Editar</button>
+              <button id="btnDel" class="btn danger">Excluir</button>
+              <button id="btnPdf" class="btn">Relatório PDF</button>
+              <button id="btnExport" class="btn">Exportar JSON</button>
+              <button id="btnImport" class="btn">Importar JSON</button>
               <input id="importFile" type="file" accept="application/json" style="display:none" />
+            </div>
+
+            <div class="hint" style="margin-top:10px">
+              Dica: clique em um membro para selecionar (Editar/Excluir).
             </div>
           </div>
 
+          <!-- Lista -->
           <div class="panel">
             <div id="list" class="list"></div>
             <div id="empty" class="empty" style="display:none">
@@ -517,17 +466,17 @@
     <div class="modal">
       <div class="modalHead">
         <h2 id="modalTitle">Novo membro</h2>
-        <button id="btnCloseModal" class="btn ghost" type="button">Fechar</button>
+        <button id="btnCloseModal" class="btn ghost">Fechar</button>
       </div>
       <div class="modalBody">
-        <div style="display:grid; gap:10px">
+        <div class="grid2">
           <div>
             <label for="mName">Nome</label>
             <input id="mName" class="field" placeholder="Ex: João Silva" />
           </div>
           <div>
             <label for="mEmail">Email</label>
-            <input id="mEmail" class="field" placeholder="ex: joao@email.com" inputmode="email" />
+            <input id="mEmail" class="field" placeholder="ex: joao@email.com" />
           </div>
           <div>
             <label for="mPlatform">Plataforma</label>
@@ -540,15 +489,20 @@
             <label for="mPSN">ID PSN</label>
             <input id="mPSN" class="field" placeholder="Ex: meuID_PSN" />
           </div>
-          <div>
-            <label for="mResp">Responsável</label>
-            <input id="mResp" class="field" placeholder="Ex: Admin / Nome do responsável" />
-          </div>
+        </div>
+
+        <div style="margin-top:10px">
+          <label for="mResp">Responsável</label>
+          <input id="mResp" class="field" placeholder="Ex: Admin / Nome do responsável" />
         </div>
 
         <div class="btnRow" style="margin-top:12px">
-          <button id="btnSave" class="btn primary" type="button">Salvar</button>
-          <button id="btnCancel" class="btn" type="button">Cancelar</button>
+          <button id="btnSave" class="btn primary">Salvar</button>
+          <button id="btnCancel" class="btn">Cancelar</button>
+        </div>
+
+        <div class="hint">
+          Campos: Nome, Email, Plataforma, ID PSN, Responsável.
         </div>
       </div>
     </div>
@@ -556,22 +510,18 @@
 
   <div id="toast" class="toast"></div>
 
-  <!-- Floating buttons -->
-  <div class="fabWrap" aria-label="Ações rápidas">
-    <button id="btnToTop" class="fab hide" aria-label="Voltar ao topo" title="Topo" type="button">
-      <svg viewBox="0 0 24 24" aria-hidden="true">
-        <path fill="currentColor" d="M12 4l7 7h-4v9H9v-9H5l7-7z"/>
-      </svg>
-    </button>
-
-    <button id="btnFabExit" class="fab exit" aria-label="Sair" title="Sair" type="button">
-      <svg viewBox="0 0 24 24" aria-hidden="true">
-        <path fill="currentColor" d="M18.3 5.7a1 1 0 0 0-1.4 0L12 10.6 7.1 5.7A1 1 0 0 0 5.7 7.1L10.6 12l-4.9 4.9a1 1 0 1 0 1.4 1.4L12 13.4l4.9 4.9a1 1 0 0 0 1.4-1.4L13.4 12l4.9-4.9a1 1 0 0 0 0-1.4Z"/>
-      </svg>
-    </button>
-  </div>
+  <!-- Floating to top (blue circle) -->
+  <button id="btnToTop" class="toTop" aria-label="Voltar ao topo" title="Voltar ao topo">
+    <!-- Arrow up (white) -->
+    <svg viewBox="0 0 24 24" aria-hidden="true">
+      <path fill="currentColor" d="M12 4l7 7h-4v9H9v-9H5l7-7z"/>
+    </svg>
+  </button>
 
   <script>
+    /**********************
+     * CONFIG
+     **********************/
     const APP = {
       STORAGE_KEY: "TSG_MEMBERS_DB_V1",
       SESSION_KEY: "TSG_MEMBERS_SESSION_V1",
@@ -581,32 +531,6 @@
     };
 
     const $ = (id) => document.getElementById(id);
-
-    function forceFitToWidth(){
-      const vp = document.querySelector('meta[name="viewport"]');
-      if(!vp) return;
-
-      // tenta forçar o browser recalcular o scale em 1
-      vp.setAttribute("content","width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no");
-      vp.setAttribute("content","width=device-width,initial-scale=1.0001,maximum-scale=1,user-scalable=no");
-      setTimeout(() => {
-        vp.setAttribute("content","width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no");
-      }, 60);
-
-      // reenquadra no topo
-      const scroller = document.querySelector(".app");
-      if(scroller) scroller.scrollTo({ top: 0 });
-
-      // remove foco pra evitar zoom “preso”
-      if(document.activeElement && typeof document.activeElement.blur === "function"){
-        document.activeElement.blur();
-      }
-    }
-    window.addEventListener("orientationchange", () => {
-      setTimeout(forceFitToWidth, 80);
-      setTimeout(forceFitToWidth, 220);
-    });
-    window.addEventListener("resize", () => setTimeout(forceFitToWidth, 120));
 
     function toast(msg){
       const t = $("toast");
@@ -645,16 +569,9 @@
         .replaceAll("'","&#039;");
     }
 
-    function setupLogoFallback(imgId, fallbackId){
-      const img = $(imgId);
-      const fallback = $(fallbackId);
-      if(!img || !fallback) return;
-      img.addEventListener("error", () => {
-        img.style.display = "none";
-        fallback.style.display = "grid";
-      }, { once:true });
-    }
-
+    /**********************
+     * Local DB
+     **********************/
     function loadDB(){
       try{
         const raw = localStorage.getItem(APP.STORAGE_KEY);
@@ -665,31 +582,58 @@
         return [];
       }
     }
-    function saveDB(arr){ localStorage.setItem(APP.STORAGE_KEY, JSON.stringify(arr)); }
-
-    function setSession(session){ sessionStorage.setItem(APP.SESSION_KEY, JSON.stringify(session)); }
-    function getSession(){
-      try{ return JSON.parse(sessionStorage.getItem(APP.SESSION_KEY) || "null"); }
-      catch{ return null; }
+    function saveDB(arr){
+      localStorage.setItem(APP.STORAGE_KEY, JSON.stringify(arr));
     }
-    function clearSession(){ sessionStorage.removeItem(APP.SESSION_KEY); }
 
+    /**********************
+     * Session
+     **********************/
+    function setSession(session){
+      sessionStorage.setItem(APP.SESSION_KEY, JSON.stringify(session));
+    }
+    function getSession(){
+      try{
+        return JSON.parse(sessionStorage.getItem(APP.SESSION_KEY) || "null");
+      }catch{
+        return null;
+      }
+    }
+    function clearSession(){
+      sessionStorage.removeItem(APP.SESSION_KEY);
+    }
+
+    /**********************
+     * State
+     **********************/
     let state = {
-      role: "view",
+      role: "view",          // "admin" | "view"
       selectedId: null,
       editingId: null,
       members: [],
       q: "",
-      filterBy: "all",
-      sortBy: "alpha",
+      filterBy: "all",       // all | name | platform | psnId | responsible
+      sortBy: "alpha",       // alpha | created
     };
 
     function showScreen(name){
       $("loginScreen").classList.remove("active");
       $("mainScreen").classList.remove("active");
       $(name).classList.add("active");
-      updateFabVisibility();
-      setTimeout(forceFitToWidth, 80);
+    }
+
+    function setRoleUI(){
+      const isAdmin = state.role === "admin";
+      $("roleLabel").textContent = isAdmin ? "Modo: Admin (acesso total)" : "Modo: Visualização (somente leitura)";
+
+      $("btnAdd").disabled = !isAdmin;
+      $("btnEdit").disabled = !isAdmin || !state.selectedId;
+      $("btnDel").disabled = !isAdmin || !state.selectedId;
+
+      $("btnPdf").disabled = false;
+
+      $("btnExport").disabled = !isAdmin;
+      $("btnImport").disabled = !isAdmin;
     }
 
     function updateBadges(){
@@ -700,11 +644,15 @@
       $("filterBadge").style.display = hasFilter ? "inline-flex" : "none";
     }
 
+    /**********************
+     * Filtering (search by chosen field)
+     **********************/
     function filteredMembers(){
       const qn = normalize(state.q);
       if(!qn) return state.members;
 
       const key = state.filterBy;
+
       return state.members.filter(m => {
         let hay = "";
         if(key === "name") hay = m.name;
@@ -712,22 +660,33 @@
         else if(key === "psnId") hay = m.psnId;
         else if(key === "responsible") hay = m.responsible;
         else hay = [m.name, m.email, m.platform, m.psnId, m.responsible].join(" ");
+
         return normalize(hay).includes(qn);
       });
     }
 
+    /**********************
+     * Sorting
+     **********************/
     function sortMembers(arr){
       const items = [...arr];
+
       if(state.sortBy === "created"){
+        // Ordem de registro: mais recente primeiro
         items.sort((a,b) => new Date(b.createdAt) - new Date(a.createdAt));
         return items;
       }
+
+      // Ordem alfabética (A–Z), ignorando acentos
       items.sort((a,b) =>
         (a.name || "").localeCompare((b.name || ""), "pt-BR", { sensitivity: "base" })
       );
       return items;
     }
 
+    /**********************
+     * Render
+     **********************/
     function render(){
       const list = $("list");
       list.innerHTML = "";
@@ -736,96 +695,51 @@
       const items = sortMembers(filteredMembers());
       const found = items.length;
 
-      $("topCountText").textContent = `${total} membros cadastrados.`;
+      // Topbar counter (discreto)
+      $("topMembers").textContent = `${total} membros`;
+
+      // Found line per requirement
       $("foundText").textContent = `Encontrados ${found} de ${total} cadastrados.`;
 
       $("empty").style.display = (items.length === 0) ? "block" : "none";
 
       for(const m of items){
-        const isSelected = (m.id === state.selectedId);
-        const showActions = isSelected && state.role === "admin";
-
-        const d = new Date(m.createdAt);
-        const dateStr = d.toLocaleDateString("pt-BR");
-
         const el = document.createElement("div");
-        el.className = "member" + (isSelected ? " selected" : "");
-
+        el.className = "member" + (m.id === state.selectedId ? " selected" : "");
         el.innerHTML = `
           <div class="memberTop">
-            <div class="memberLeft">
-              <div class="nameRow">
-                <p class="memberName">${escapeHTML(m.name)}</p>
-                <span class="chip ok platformTag">${escapeHTML(m.platform)}</span>
-              </div>
-
-              <span class="chip dateTag">${escapeHTML(dateStr)}</span>
-
+            <div>
+              <p class="memberName">${escapeHTML(m.name)}</p>
               <div class="kv">
                 <div><b>Email:</b> ${escapeHTML(m.email || "—")}</div>
                 <div><b>PSN:</b> ${escapeHTML(m.psnId || "—")}</div>
-
-                <div class="kvLine">
-                  <div class="left"><b>Responsável:</b> ${escapeHTML(m.responsible || "—")}</div>
-
-                  ${
-                    showActions
-                      ? `
-                        <div class="miniActions" aria-label="Ações do membro">
-                          <button class="iconBtn" data-action="edit" type="button" title="Editar" aria-label="Editar">
-                            <svg viewBox="0 0 24 24" aria-hidden="true">
-                              <path fill="currentColor" d="M3 17.25V21h3.75L17.81 9.94l-3.75-3.75L3 17.25zm2.92 2.83H5v-.92l8.06-8.06.92.92L5.92 20.08zM20.71 7.04a1 1 0 0 0 0-1.41L18.37 3.29a1 1 0 0 0-1.41 0l-1.83 1.83 3.75 3.75 1.83-1.83z"/>
-                            </svg>
-                          </button>
-
-                          <button class="iconBtn" data-action="delete" type="button" title="Excluir" aria-label="Excluir">
-                            <svg viewBox="0 0 24 24" aria-hidden="true">
-                              <path fill="currentColor" d="M6 7h12l-1 14H7L6 7zm3-3h6l1 2H8l1-2zM4 7h16v2H4V7zm5 4h2v8H9v-8zm4 0h2v8h-2v-8z"/>
-                            </svg>
-                          </button>
-                        </div>
-                      `
-                      : ``
-                  }
-                </div>
+                <div><b>Responsável:</b> ${escapeHTML(m.responsible || "—")}</div>
               </div>
+            </div>
+            <div class="chips">
+              <span class="chip ok">${escapeHTML(m.platform)}</span>
+              <span class="chip">${new Date(m.createdAt).toLocaleDateString("pt-BR")}</span>
             </div>
           </div>
         `;
-
         el.addEventListener("click", () => {
           state.selectedId = (state.selectedId === m.id) ? null : m.id;
+          setRoleUI();
           updateBadges();
           render();
         });
-
-        const btnEdit = el.querySelector('[data-action="edit"]');
-        const btnDel  = el.querySelector('[data-action="delete"]');
-
-        if(btnEdit){
-          btnEdit.addEventListener("click", (ev) => {
-            ev.stopPropagation();
-            openModal("edit", m);
-          });
-        }
-        if(btnDel){
-          btnDel.addEventListener("click", (ev) => {
-            ev.stopPropagation();
-            deleteById(m.id);
-          });
-        }
-
         list.appendChild(el);
       }
 
       updateBadges();
-      updateFabVisibility();
+      setRoleUI();
     }
 
+    /**********************
+     * Modal
+     **********************/
     function openModal(mode, member=null){
       $("modalBack").classList.add("show");
-      setTimeout(forceFitToWidth, 60);
-
       if(mode === "add"){
         $("modalTitle").textContent = "Incluir membro";
         state.editingId = null;
@@ -843,10 +757,12 @@
         $("mPSN").value = member.psnId ?? "";
         $("mResp").value = member.responsible ?? "";
       }
-
-      setTimeout(() => $("mName").focus(), 80);
+      setTimeout(() => $("mName").focus(), 50);
     }
-    function closeModal(){ $("modalBack").classList.remove("show"); setTimeout(forceFitToWidth, 80); }
+
+    function closeModal(){
+      $("modalBack").classList.remove("show");
+    }
 
     function validateMember(data){
       if(!data.name || data.name.trim().length < 2) return "Informe o Nome (mínimo 2 caracteres).";
@@ -887,14 +803,15 @@
       render();
     }
 
-    function deleteById(memberId){
-      const m = state.members.find(x => x.id === memberId);
+    function deleteSelected(){
+      if(!state.selectedId) return;
+      const m = state.members.find(x => x.id === state.selectedId);
       if(!m) return;
 
       const ok = confirm(`Excluir "${m.name}"?`);
       if(!ok) return;
 
-      const db = loadDB().filter(x => x.id !== memberId);
+      const db = loadDB().filter(x => x.id !== state.selectedId);
       saveDB(db);
       state.members = db;
       state.selectedId = null;
@@ -902,8 +819,11 @@
       render();
     }
 
+    /**********************
+     * PDF Report
+     **********************/
     function generatePDF(){
-      const items = sortMembers(filteredMembers());
+      const items = sortMembers(filteredMembers()); // respeita filtro + ordenação
       const title = "TSG • Cadastro de Membros";
       const sub = `Gerado em ${new Date().toLocaleString("pt-BR")} • Registros: ${items.length}`;
 
@@ -938,9 +858,11 @@
 
       doc.save("TSG_Cadastro_de_Membros.pdf");
       toast("PDF gerado.");
-      setTimeout(forceFitToWidth, 120);
     }
 
+    /**********************
+     * Export / Import
+     **********************/
     function exportJSON(){
       const db = loadDB();
       const payload = { app: "TSG_MEMBERS", version: 1, exportedAt: nowISO(), data: db };
@@ -955,7 +877,6 @@
       a.remove();
       URL.revokeObjectURL(url);
       toast("Backup exportado.");
-      setTimeout(forceFitToWidth, 120);
     }
 
     async function importJSON(file){
@@ -982,19 +903,20 @@
         state.selectedId = null;
         toast("Importação concluída.");
         render();
-        setTimeout(forceFitToWidth, 160);
       }catch(e){
         toast("Falha ao importar JSON.");
       }
     }
 
+    /**********************
+     * Login
+     **********************/
     function setLoginMode(mode){
       const isAdmin = mode === "admin";
       $("pillAdmin").classList.toggle("active", isAdmin);
       $("pillView").classList.toggle("active", !isAdmin);
       $("adminForm").style.display = isAdmin ? "grid" : "none";
       $("viewForm").style.display = isAdmin ? "none" : "grid";
-      setTimeout(forceFitToWidth, 80);
     }
 
     async function loginAdmin(){
@@ -1033,8 +955,10 @@
         }];
         saveDB(seed);
         state.members = loadDB();
+        toast("Criei 1 registro de exemplo. Você pode editar/excluir.");
       }
 
+      // reset UI (padrão: A–Z)
       state.selectedId = null;
       state.q = "";
       state.filterBy = "all";
@@ -1044,10 +968,10 @@
       $("sortBy").value = "alpha";
 
       showScreen("mainScreen");
+      setRoleUI();
       render();
 
       document.querySelector(".app").scrollTo({ top: 0 });
-      setTimeout(forceFitToWidth, 120);
     }
 
     function logout(){
@@ -1069,55 +993,51 @@
       toast("Você saiu.");
 
       document.querySelector(".app").scrollTo({ top: 0 });
-      setTimeout(forceFitToWidth, 120);
     }
 
-    function updateFabVisibility(){
-      const isMain = $("mainScreen").classList.contains("active");
-      $("btnFabExit").classList.toggle("hide", !isMain);
-
-      if(!isMain){
-        $("btnToTop").classList.add("hide");
-        return;
-      }
-      const scroller = document.querySelector(".app");
-      if(scroller.scrollTop > 240) $("btnToTop").classList.remove("hide");
-      else $("btnToTop").classList.add("hide");
-    }
-
+    /**********************
+     * Init
+     **********************/
     async function init(){
+      // Hash padrão para "tsgadmin"
       APP.ADMIN_PASS_HASH = await sha256("tsgadmin" + "::" + APP.SALT);
 
-      setupLogoFallback("logoImgLogin", "logoFallbackLogin");
-      setupLogoFallback("logoImgTop", "logoFallbackTop");
-
+      // Tabs login
       $("pillAdmin").addEventListener("click", () => setLoginMode("admin"));
       $("pillView").addEventListener("click", () => setLoginMode("view"));
       $("btnGoView").addEventListener("click", () => setLoginMode("view"));
       $("btnBackAdmin").addEventListener("click", () => setLoginMode("admin"));
 
+      // login
       $("btnLoginAdmin").addEventListener("click", loginAdmin);
       $("btnLoginView").addEventListener("click", loginView);
 
+      // enter key
       $("loginPass").addEventListener("keydown", (e) => {
         if(e.key === "Enter") loginAdmin();
       });
+
+      // main actions
+      $("btnLogout").addEventListener("click", logout);
 
       $("q").addEventListener("input", (e) => {
         state.q = e.target.value;
         state.selectedId = null;
         render();
       });
+
       $("filterBy").addEventListener("change", (e) => {
         state.filterBy = e.target.value;
         state.selectedId = null;
         render();
       });
+
       $("sortBy").addEventListener("change", (e) => {
         state.sortBy = e.target.value;
         state.selectedId = null;
         render();
       });
+
       $("btnClearSearch").addEventListener("click", () => {
         state.q = "";
         state.filterBy = "all";
@@ -1125,7 +1045,7 @@
         $("filterBy").value = "all";
         state.selectedId = null;
         render();
-        setTimeout(forceFitToWidth, 120);
+        toast("Busca limpa.");
       });
 
       $("btnAdd").addEventListener("click", () => {
@@ -1133,27 +1053,44 @@
         openModal("add");
       });
 
+      $("btnEdit").addEventListener("click", () => {
+        if(state.role !== "admin") return;
+        const m = state.members.find(x => x.id === state.selectedId);
+        if(!m){ toast("Selecione um membro."); return; }
+        openModal("edit", m);
+      });
+
+      $("btnDel").addEventListener("click", () => {
+        if(state.role !== "admin") return;
+        if(!state.selectedId){ toast("Selecione um membro."); return; }
+        deleteSelected();
+      });
+
       $("btnPdf").addEventListener("click", generatePDF);
+
       $("btnExport").addEventListener("click", () => {
         if(state.role !== "admin") return;
         exportJSON();
       });
+
       $("btnImport").addEventListener("click", () => {
         if(state.role !== "admin") return;
         $("importFile").click();
-        setTimeout(forceFitToWidth, 120);
       });
+
       $("importFile").addEventListener("change", (e) => {
         const f = e.target.files && e.target.files[0];
         if(f) importJSON(f);
         e.target.value = "";
       });
 
+      // modal
       $("btnCloseModal").addEventListener("click", closeModal);
       $("btnCancel").addEventListener("click", closeModal);
       $("modalBack").addEventListener("click", (e) => {
         if(e.target === $("modalBack")) closeModal();
       });
+
       $("btnSave").addEventListener("click", () => {
         if(state.role !== "admin") return;
         const data = {
@@ -1166,28 +1103,31 @@
         upsertMember(data);
       });
 
-      const scroller = document.querySelector(".app");
-      scroller.addEventListener("scroll", updateFabVisibility);
-      $("btnToTop").addEventListener("click", () => scroller.scrollTo({ top: 0, behavior: "smooth" }));
-      $("btnFabExit").addEventListener("click", logout);
+      // Floating to-top button based on scroll
+      const appScroller = document.querySelector(".app");
+      const btnToTop = $("btnToTop");
 
+      function updateToTopBtn(){
+        const mainActive = $("mainScreen").classList.contains("active");
+        if(!mainActive){ btnToTop.classList.remove("show"); return; }
+        if(appScroller.scrollTop > 240) btnToTop.classList.add("show");
+        else btnToTop.classList.remove("show");
+      }
+
+      appScroller.addEventListener("scroll", updateToTopBtn);
+      btnToTop.addEventListener("click", () => appScroller.scrollTo({ top: 0, behavior: "smooth" }));
+
+      // Auto session
       const ses = getSession();
       if(ses && (ses.role === "admin" || ses.role === "view")){
         state.role = ses.role;
         enterApp();
       }else{
-        updateFabVisibility();
-        setTimeout(forceFitToWidth, 120);
+        updateToTopBtn();
       }
     }
 
     init();
   </script>
-
-  <!--
-    LOGO:
-    - Coloque o arquivo em: /assets/tsg-logo.png
-    - Se não existir, aparece o fallback “TSG”.
-  -->
 </body>
 </html>
